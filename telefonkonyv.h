@@ -34,34 +34,36 @@ public:
 
 class Contact {
     Name name;
-    String personalNumber;
-    String workNumber;
     String address;
 public:
-    Contact(Name name, String personalNumber, String address) : name(Name(name)),
-                                                                personalNumber(String(personalNumber)),
-                                                                address(String(address)) {}
+    Contact(Name name, String address):name(Name(name)),address(String(address)){}
+    String getName()const{return name.getName();}
+    String getAddress()const{return address;}
+    virtual String getNumber() const = 0;
+    virtual
 
-    Contact(Name name, String personalNumber, String workNumber, String address) : name(Name(name)), personalNumber(
-            String(personalNumber)), workNumber(String(workNumber)), address(String(address)) {}
-
-    String getName() const { return name.getName(); }
-
-    String getPersonal() const { return personalNumber; }
-
-    String getWork() const { return workNumber; }
-
-    String getAddress() const { return address; }
-
-    void print(std::ostream &os) const {
-        std::cout
-                << getName() + " "
-                << personalNumber + " "
-                << ((workNumber.size() > 0) ? workNumber + " " : "")
-                << address + " " << std::endl;
-    }
 };
 
+class PersonalContact : public Contact{
+    String personalNumber;
+public:
+    PersonalContact(Name name, String address, String personalNumber): Contact(name, address),personalNumber(String(personalNumber)){}
+    String getNumber() const{return personalNumber;}
+};
+class WorkContact : public Contact{
+    String workNumber;
+    String email;
+public:
+    WorkContact(Name name, String address, String workNumber, String email): Contact(name,address), workNumber(String(workNumber)),
+                                                                             email(String(email)){}
+    String getNumber() const{return workNumber;}
+    String getEmail()const{return email;}
+
+};
+
+class bothContact : public PersonalContact,WorkContact{
+
+};
 class PhoneBook {
     GenTomb<Contact *> contacts;
 public:
@@ -86,7 +88,7 @@ public:
     PhoneBook searchForPhoneNumber(String telefonszam) {
         PhoneBook temp;
         for (size_t i = 0; i < contacts.getSize(); ++i) {
-            if (strstr(contacts[i]->getPersonal().c_str(), telefonszam.c_str()) != nullptr) {
+            if (strstr(contacts[i]->getNumber().c_str(), telefonszam.c_str()) != nullptr) {
                 temp.addContact(contacts[i]);
             }
         }
@@ -116,7 +118,9 @@ public:
 //formatum, opcionalis szam es nev valtozatok tarolasa?
     void readFromFile(std::fstream);
 
-    void saveToFile(std::fstream) const;
+    void saveToFile(std::fstream) const{
+
+    }
 
     int getSize() { return contacts.getSize(); }
 };
