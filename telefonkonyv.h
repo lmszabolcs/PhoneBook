@@ -36,34 +36,45 @@ class Contact {
     Name name;
     String address;
 public:
-    Contact(Name name, String address):name(Name(name)),address(String(address)){}
-    String getName()const{return name.getName();}
-    String getAddress()const{return address;}
+    Contact(Name name, String address) : name(Name(name)), address(String(address)) {}
+
+    String getName() const { return name.getName(); }
+
+    String getAddress() const { return address; }
+
     virtual String getNumber() const = 0;
+
     virtual
 
 };
 
-class PersonalContact : public Contact{
+class PersonalContact : public Contact {
     String personalNumber;
 public:
-    PersonalContact(Name name, String address, String personalNumber): Contact(name, address),personalNumber(String(personalNumber)){}
-    String getNumber() const{return personalNumber;}
+    PersonalContact(Name name, String address, String personalNumber) : Contact(name, address),
+                                                                        personalNumber(String(personalNumber)) {}
+
+    String getNumber() const { return personalNumber; }
 };
-class WorkContact : public Contact{
+
+class WorkContact : public Contact {
     String workNumber;
     String email;
 public:
-    WorkContact(Name name, String address, String workNumber, String email): Contact(name,address), workNumber(String(workNumber)),
-                                                                             email(String(email)){}
-    String getNumber() const{return workNumber;}
-    String getEmail()const{return email;}
+    WorkContact(Name name, String address, String workNumber, String email) : Contact(name, address),
+                                                                              workNumber(String(workNumber)),
+                                                                              email(String(email)) {}
+
+    String getNumber() const { return workNumber; }
+
+    String getEmail() const { return email; }
 
 };
 
-class bothContact : public PersonalContact,WorkContact{
+class bothContact : public PersonalContact, WorkContact {
 
 };
+
 class PhoneBook {
     GenTomb<Contact *> contacts;
 public:
@@ -118,7 +129,7 @@ public:
 //formatum, opcionalis szam es nev valtozatok tarolasa?
     void readFromFile(std::fstream);
 
-    void saveToFile(std::fstream) const{
+    void saveToFile(std::fstream) const {
 
     }
 
