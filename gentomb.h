@@ -44,7 +44,7 @@ public:
 
     }
 
-    T &operator[](int index) { return data[index]; }
+    T &operator[](int index) const { return data[index]; }
 
     GenTomb &operator=(T temp) {
         for (int i = 0; i < size; i++)
@@ -52,7 +52,7 @@ public:
         return *this;
     }
 
-    int getSize() { return size; }
+    int getSize() const { return size; }
 };
 
 #endif // GENTOMB_HPP
