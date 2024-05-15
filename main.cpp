@@ -16,15 +16,15 @@ void test1() {
 void test2() {
     // Contact osztály tesztjei
     Name name("Alice", "Smith");
-    Contact contact1(name, "987-654-3210", "123 Elm St");
+    PersonalContact contact1(name,  "123 Elm St","987-654-3210");
     assert(strcmp(contact1.getName().c_str(), "Alice Smith") == 0);
-    assert(strcmp(contact1.getPersonal().c_str(), "987-654-3210") == 0);
+    assert(strcmp(contact1.getNumber().c_str(), "987-654-3210") == 0);
 
     Name name2("John", "Doe");
-    Contact contact2(name2, "123-456-7890", "555-555-123", "456 Oak St");
+    WorkContact contact2(name2, "456 Oak St", "123-456-7890", "asd123@asd.hu" );
     assert(strcmp(contact2.getName().c_str(), "John Doe") == 0);
-    assert(strcmp(contact2.getPersonal().c_str(), "123-456-7890") == 0);
-    assert(strcmp(contact2.getWork().c_str(), "555-555-123") == 0);
+    assert(strcmp(contact2.getNumber().c_str(), "123-456-7890") == 0);
+    assert(strcmp(contact2.getEmail().c_str(), "asd123@asd.hu") == 0);
     assert(strcmp(contact2.getAddress().c_str(), "456 Oak St") == 0);
 
     contact1.print(std::cout);
@@ -35,7 +35,7 @@ void test3() {
     PhoneBook phoneBook;
 
     Name name1("John", "Doe");
-    Contact contact1(name1, "123-456-7890", "123 Main St");
+    WorkContact contact1(name1, "123 Main St","123-456-7890", "asdasd@asd.hu");
     phoneBook.addContact(&contact1);
 
     phoneBook.listAllContacts();

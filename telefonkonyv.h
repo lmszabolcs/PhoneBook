@@ -5,6 +5,7 @@
 #define TELEFONKONYV_TELEFONKONYV_H
 
 #include <iostream>
+#include <iomanip>
 #include "string5.h"
 #include "gentomb.h"
 #include "gtest_lite.h"
@@ -43,8 +44,11 @@ public:
     String getAddress() const { return address; }
 
     virtual String getNumber() const = 0;
+    virtual std::ostream& print(std::ostream& os) {
+        os <<"\n"<< std::setw(20) << std::left << name.getName() << std::setw(20) << address << "\n";
+        return os;
+    }
 
-    virtual
 
 };
 
@@ -53,7 +57,11 @@ class PersonalContact : public Contact {
 public:
     PersonalContact(Name name, String address, String personalNumber) : Contact(name, address),
                                                                         personalNumber(String(personalNumber)) {}
-
+    std::ostream& print(std::ostream& os) {
+        this->Contact::print(os);
+        os << std::setw(20) << std::left << "Personal Number: " << personalNumber << "\n";
+        return os;
+    }
     String getNumber() const { return personalNumber; }
 };
 
@@ -68,11 +76,12 @@ public:
     String getNumber() const { return workNumber; }
 
     String getEmail() const { return email; }
-
-};
-
-class bothContact : public PersonalContact, WorkContact {
-
+    std::ostream& print(std::ostream& os) {
+        this->Contact::print(os);
+        os << std::setw(20) << std::left << "Work Number: " << workNumber << "\n";
+        os << std::setw(20) << std::left << "Email: " << email << "\n";
+        return os;
+    }
 };
 
 class PhoneBook {
@@ -80,7 +89,6 @@ class PhoneBook {
 public:
     void listAllContacts() {
         for (size_t i = 0; i < contacts.getSize(); ++i) {
-            std::cout << i + 1 << ". ";
             contacts[i]->print(std::cout);
         }
     }
