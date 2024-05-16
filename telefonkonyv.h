@@ -12,11 +12,12 @@
 class Name {
     String firstname, lastname, nickname;
 public:
-    Name(String nickname) : nickname(String(nickname)) {}
+    Name(){}
+    Name(const String& nickname) : nickname(String(nickname)) {}
 
-    Name(String firstname, String lastname) : firstname(String(firstname)), lastname(String(lastname)) {}
+    Name(const String& firstname, const String& lastname) : firstname(String(firstname)), lastname(String(lastname)) {}
 
-    Name(String firstname, String lastname, String nickname) : firstname(String(firstname)), lastname(String(lastname)),
+    Name(const String& firstname, const String& lastname, const String& nickname) : firstname(String(firstname)), lastname(String(lastname)),
                                                                nickname(String(nickname)) {}
     String getFirstname()const{return firstname;}
     String getLastname()const{return lastname;}
@@ -44,7 +45,7 @@ class Contact {
     ContactType type;
 
 public:
-    Contact(Name name, String address, ContactType type) : name(name), address(address), type(type) {}
+    Contact(const Name& name, const String& address, const ContactType& type) : name(name), address(address), type(type) {}
 
     String getName() const { return name.getName(); }
     String getFirstname() const{return name.getFirstname();}
@@ -65,8 +66,8 @@ public:
 class PersonalContact : public Contact {
     String personalNumber;
 public:
-    PersonalContact(Name name, String address, String personalNumber) : Contact(name, address, ContactType::Personal),
-                                                                        personalNumber(String(personalNumber)) { setType(Personal);}
+    PersonalContact(const Name& name, const String& address, const String& personalNumber)
+            : Contact(name, address, ContactType::Personal), personalNumber(personalNumber) {}
 
     std::ostream& print(std::ostream& os) override {
         this->Contact::print(os);
@@ -80,9 +81,9 @@ class WorkContact : public Contact {
     String workNumber;
     String email;
 public:
-    WorkContact(Name name, String address, String workNumber, String email) : Contact(name, address, ContactType::Work),
-                                                                              workNumber(String(workNumber)),
-                                                                              email(String(email)) { setType(Work);}
+    WorkContact(const Name& name, const String& address, const String& workNumber, const String& email)
+            : Contact(name, address, ContactType::Work), workNumber(workNumber), email(email) {}
+
 
     String getNumber() const { return workNumber; }
 
@@ -103,8 +104,9 @@ public:
             contacts[i]->print(std::cout);
         }
     }
+    GenTomb<Contact*> getContacts(){return contacts;}
 
-    PhoneBook searchForName(const String &nev) {
+    PhoneBook searchForName(const String nev)const {
         PhoneBook temp;
         for (size_t i = 0; i < contacts.getSize(); ++i) {
             if (strstr(contacts[i]->getName().c_str(), nev.c_str()) != nullptr) {
@@ -115,7 +117,7 @@ public:
     }
 
 
-    PhoneBook searchForPhoneNumber(String telefonszam) {
+    PhoneBook searchForPhoneNumber(const String& telefonszam)const {
         PhoneBook temp;
         for (size_t i = 0; i < contacts.getSize(); ++i) {
             if (strstr(contacts[i]->getNumber().c_str(), telefonszam.c_str()) != nullptr) {
@@ -125,30 +127,67 @@ public:
         return temp;
     }
 
-//hasonlo a masik kettohoz
-    PhoneBook searchForAddress(String);
+    PhoneBook searchForAddress(const String& address)const{
+        PhoneBook temp;
+        for (size_t i = 0; i < contacts.getSize(); ++i) {
+            if (strstr(contacts[i]->getAddress().c_str(), address.c_str()) != nullptr) {
+                temp.addContact(contacts[i]);
+            }
+        }
+        return temp;
+    }
 
     void addContact(Contact *contact) {
         contacts.add(contact);
     }
 
-//kezelni, ha tobb kontaktot is talal
-    void deleteContact(String &param) {
+    void deleteContact(const String &param) {
         PhoneBook foundContacts = searchForName(param);
         PhoneBook temp = searchForPhoneNumber(param);
+
         for (size_t i = 0; i < temp.getSize(); ++i)
             foundContacts.addContact(temp.contacts[i]);
-        if (foundContacts.getSize() == 1)
-            contacts.remove(foundContacts.contacts[0]);
-        else {
-            // További kezelés, ha több kontaktot találtunk
-            // ...
-        }
+
+        for (size_t i = 0; i < foundContacts.contacts.getSize(); ++i)
+            contacts.remove(foundContacts.contacts[i]);
+
     }
 
-
     void readFromFile(std::fstream& file) {
+        if (!file.is_open()) {
+            throw std::runtime_error("Could not open file for reading");
+        }
 
+        char buffer[256];
+
+        while (file.getline(buffer, sizeof(buffer))) {
+            int typeInt = std::atoi(buffer);
+            ContactType type = static_cast<ContactType>(typeInt);
+
+            file.getline(buffer, sizeof(buffer));
+            String firstname(buffer);
+
+            file.getline(buffer, sizeof(buffer));
+            String lastname(buffer);
+
+            file.getline(buffer, sizeof(buffer));
+            String nickname(buffer);
+
+            file.getline(buffer, sizeof(buffer));
+            String address(buffer);
+
+            file.getline(buffer, sizeof(buffer));
+            String number(buffer);
+
+            if (type == ContactType::Personal) {
+                contacts.add(new PersonalContact(Name(firstname, lastname, nickname), address, number));
+            } else if (type == ContactType::Work) {
+                file.getline(buffer, sizeof(buffer));
+                String email(buffer);
+                contacts.add(new WorkContact(Name(firstname, lastname, nickname), address, number, email));
+            }
+            file.getline(buffer, sizeof(buffer));
+        }
     }
 
 
@@ -158,21 +197,22 @@ public:
     }
     for (size_t i = 0; i < contacts.getSize(); ++i) {
         const Contact* contact = contacts[i];
-
-        file << "FirstName:" << contact->getFirstname() << std::endl;
-        file << "LastName:" << contact->getLastname() << std::endl;
-        file << "NickName:" << contact->getNickname() << std::endl;
-        file << "Address:" << contact->getAddress() << std::endl;
+        file << contact->getType() << std::endl;
+        file << contact->getFirstname() << std::endl;
+        file << contact->getLastname() << std::endl;
+        file << contact->getNickname() << std::endl;
+        file << contact->getAddress() << std::endl;
 
         if (contact->getType() == ContactType::Personal) {
-            file << "PersonalNumber:" << contact->getNumber() << std::endl;
+            file << contact->getNumber() << std::endl;
         } else {
-            file << "WorkNumber:" << contact->getNumber() << std::endl;
-            file << "Email:" << contact->getEmail() << std::endl;
+            file << contact->getNumber() << std::endl;
+            file << contact->getEmail() << std::endl;
         }
         file << std::endl;
     }
 }
 
-    int getSize() { return contacts.getSize(); }
+    int getSize() const{ return contacts.getSize(); }
 };
+

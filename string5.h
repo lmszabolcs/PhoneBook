@@ -24,6 +24,7 @@ public:
     /// @return Sztring hossza
     size_t size() const { return len; }
 
+    bool empty() const { return len == 0; }
 
     /// Default konstruktor
     /// String() :pData(0), len(0) {}

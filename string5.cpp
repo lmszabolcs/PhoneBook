@@ -93,6 +93,7 @@ String String::operator+(String const &rhs_s) const {
 
 }
 
+
 // << operator, ami kiír az ostream-re
 std::ostream &operator<<(std::ostream &os, const String &s0) {
     os << s0.c_str();

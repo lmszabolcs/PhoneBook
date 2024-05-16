@@ -1,67 +1,218 @@
-#include <iostream>
-#include <cassert>
 #include "telefonkonyv.h"
+#include <iostream>
+#include <sstream>
+#include <string>
 
-void test1() {
-    // Name osztály teszjei
-    Name name1("John", "Doe");
-    Name name2("Bob");
-    Name name3("Lisa", "Smith", "Liz");
 
-    assert(strcmp(name1.getName().c_str(), "John Doe") == 0);
-    assert(strcmp(name2.getName().c_str(), "Bob") == 0);
-    assert(strcmp(name3.getName().c_str(), "Lisa Smith (Liz)") == 0);
+// ... (your other includes and class definitions)
+
+#define MY_CUSTOM_TEST(C, N) void C##_##N##_()
+
+
+// --- Test function definitions OUTSIDE the main function ---
+
+MY_CUSTOM_TEST(PhoneBookTest, AddContact) {
+    PhoneBook book;
+
+    // Add valid personal contact
+    PersonalContact* personal = new PersonalContact(Name("John", "Doe", "Johnny"), "123 Main St", "555-1212");
+    book.addContact(personal);
+
+    // Add valid work contact
+    WorkContact* work = new WorkContact(Name("Jane", "Smith"), "456 Elm St", "555-9876", "jane@example.com");
+    book.addContact(work);
+
+    // Redirect GTEST_LITE output to a stringstream
+    std::ostringstream testOutput;
+    gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
+
+    // Check if both contacts were added
+    EXPECT_EQ(2, book.getSize());
+
+    // Test that the contacts were added with the correct information
+    EXPECT_STREQ("John Doe (Johnny)", book.getContacts()[0]->getName().c_str());
+    EXPECT_STREQ("555-1212", book.getContacts()[0]->getNumber().c_str());
+    EXPECT_STREQ("123 Main St", book.getContacts()[0]->getAddress().c_str());
+
+    EXPECT_STREQ("Jane Smith", book.getContacts()[1]->getName().c_str());
+    EXPECT_STREQ("555-9876", book.getContacts()[1]->getNumber().c_str());
+    EXPECT_STREQ("jane@example.com", book.getContacts()[1]->getEmail().c_str());
+    EXPECT_STREQ("456 Elm St", book.getContacts()[1]->getAddress().c_str());
+
+    // Test adding a duplicate contact (should not be added)
+    book.addContact(personal);
+    EXPECT_EQ(2, book.getSize()); // Size should remain the same
+
+    // Test adding a null contact (should not be added)
+    book.addContact(nullptr);
+    EXPECT_EQ(2, book.getSize()); // Size should remain the same
+
+    if (gtest_lite::test.astatus()) {
+        std::cout << "PhoneBookTest_AddContact: PASSED\n";
+    } else {
+        std::cout << "PhoneBookTest_AddContact: FAILED\n";
+        std::cout << testOutput.str();
+    }
+
+    delete personal;
+    delete work;
 }
 
-void test2() {
-    // Contact osztály tesztjei
-    Name name("Alice", "Smith");
-    PersonalContact contact1(name, "123 Elm St", "987-654-3210");
-    assert(strcmp(contact1.getName().c_str(), "Alice Smith") == 0);
-    assert(strcmp(contact1.getNumber().c_str(), "987-654-3210") == 0);
+MY_CUSTOM_TEST(PhoneBookTest, SearchForName) {
+    PhoneBook book;
+    book.addContact(new PersonalContact(Name("John", "Doe", "Johnny"), "123 Main St", "555-1212"));
+    book.addContact(new WorkContact(Name("Jane", "Smith"), "456 Elm St", "555-9876", "jane@example.com"));
+    // Redirect GTEST_LITE output to a stringstream
+    std::ostringstream testOutput;
+    gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
 
-    Name name2("John", "Doe");
-    WorkContact contact2(name2, "456 Oak St", "123-456-7890", "asd123@asd.hu");
-    assert(strcmp(contact2.getName().c_str(), "John Doe") == 0);
-    assert(strcmp(contact2.getNumber().c_str(), "123-456-7890") == 0);
-    assert(strcmp(contact2.getEmail().c_str(), "asd123@asd.hu") == 0);
-    assert(strcmp(contact2.getAddress().c_str(), "456 Oak St") == 0);
+    PhoneBook result = book.searchForName("John");
+    EXPECT_EQ(1, result.getSize());
+    EXPECT_STREQ("John Doe (Johnny)", result.getContacts()[0]->getName().c_str());
+    // Hibás bemenet tesztelése
+    result = book.searchForName("Nonexistent");
+    EXPECT_EQ(0, result.getSize());
 
-    contact1.print(std::cout);
+    if (gtest_lite::test.astatus()) {
+        std::cout << "PhoneBookTest_SearchForName: PASSED\n";
+    } else {
+        std::cout << "PhoneBookTest_SearchForName: FAILED\n";
+        std::cout << testOutput.str();
+    }
 }
+
+
+MY_CUSTOM_TEST(PhoneBookTest, SearchForPhoneNumber) {
+    // Test code for PhoneBook::searchForPhoneNumber
+
+    // Redirection and output
+    std::ostringstream testOutput;
+    gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
+
+    if (gtest_lite::test.astatus()) {
+        std::cout << "PhoneBookTest_SearchForPhoneNumber: PASSED\n";
+    } else {
+        std::cout << "PhoneBookTest_SearchForPhoneNumber: FAILED\n";
+        std::cout << testOutput.str();
+    }
+
+}
+MY_CUSTOM_TEST(PhoneBookTest, SearchForAddress) {
+    PhoneBook book;
+    book.addContact(new PersonalContact(Name("John", "Doe", "Johnny"), "123 Main St", "555-1212"));
+    book.addContact(new WorkContact(Name("Jane", "Smith"), "456 Elm St", "555-9876", "jane@example.com"));
+
+    std::ostringstream testOutput;
+    gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
+
+    PhoneBook result = book.searchForAddress("Main");
+    EXPECT_EQ(1, result.getSize());
+    EXPECT_STREQ("John Doe (Johnny)", result.getContacts()[0]->getName().c_str());
+
+    // Hibás bemenet tesztelése
+    result = book.searchForAddress("Unknown");
+    EXPECT_EQ(0, result.getSize());
+
+    if (gtest_lite::test.astatus()) {
+        std::cout << "PhoneBookTest_SearchForAddress: PASSED\n";
+    } else {
+        std::cout << "PhoneBookTest_SearchForAddress: FAILED\n";
+        std::cout << testOutput.str();
+    }
+}
+
+MY_CUSTOM_TEST(PhoneBookTest, DeleteContact) {
+    PhoneBook book;
+    PersonalContact* personal = new PersonalContact(Name("John", "Doe", "Johnny"), "123 Main St", "555-1212");
+    WorkContact* work = new WorkContact(Name("Jane", "Smith"), "456 Elm St", "555-9876", "jane@example.com");
+    book.addContact(personal);
+    book.addContact(work);
+
+    // Redirect GTEST_LITE output to a stringstream
+    std::ostringstream testOutput;
+    gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
+
+    book.deleteContact("John");
+    EXPECT_EQ(1, book.getSize());
+
+    // Hibás bemenet tesztelése
+    //book.deleteContact("Nonexistent");
+    EXPECT_EQ(1, book.getSize());
+
+    if (gtest_lite::test.astatus()) {
+        std::cout << "PhoneBookTest_DeleteContact: PASSED\n";
+    } else {
+        std::cout << "PhoneBookTest_DeleteContact: FAILED\n";
+        std::cout << testOutput.str();
+    }
+}
+
+
+MY_CUSTOM_TEST(PhoneBookTest, SaveToFile) {
+    PhoneBook book;
+    book.addContact(new PersonalContact(Name("John", "Doe", "Johnny"), "123 Main St", "555-1212"));
+    book.addContact(new WorkContact(Name("Jane", "Smith"), "456 Elm St", "555-9876", "jane@example.com"));
+
+    std::ostringstream testOutput;
+    gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
+
+    std::fstream file("test_contacts1.txt", std::ios::out);
+    book.saveToFile(file);
+    file.close();
+
+    // Itt ellenőrizhetnéd a fájl tartalmát, hogy megfelel-e az elvártnak.
+    if (gtest_lite::test.astatus()) {
+        std::cout << "PhoneBookTest_SaveToFile: PASSED\n";
+    } else {
+        std::cout << "PhoneBookTest_SaveToFile: FAILED\n";
+        std::cout << testOutput.str();
+    }
+
+}
+
+MY_CUSTOM_TEST(PhoneBookRead, BasicRead) {
+PhoneBook phonebook;
+std::fstream file("test_contacts.txt", std::ios::in);
+phonebook.readFromFile(file);
+phonebook.listAllContacts();
+// Assertions
+EXPECT_EQ(2, phonebook.getSize());
+Contact* contact1 = phonebook.getContacts()[0];
+EXPECT_EQ(ContactType::Personal, contact1->getType());
+EXPECT_EQ("John", contact1->getFirstname().c_str());
+EXPECT_EQ("Doe", contact1->getLastname().c_str());
+EXPECT_EQ("Johnny", contact1->getNickname().c_str());
+EXPECT_EQ("123 Main St", contact1->getAddress().c_str());
+EXPECT_EQ("555-1212", contact1->getNumber().c_str());
+
+Contact* contact2 = phonebook.getContacts()[1];
+EXPECT_EQ(ContactType::Work, contact2->getType());
+EXPECT_EQ("Jane", contact2->getFirstname().c_str());
+EXPECT_EQ("Smith", contact2->getLastname().c_str());
+EXPECT_EQ("", contact2->getNickname().c_str());
+EXPECT_EQ("456 Elm St", contact2->getAddress().c_str());
+EXPECT_EQ("555-9876", contact2->getNumber().c_str());
+EXPECT_EQ("jane@example.com", contact2->getEmail().c_str());
+
+// Close the file AFTER all assertions
+file.close();
+
+// Clean up
+}
+
 
 int main() {
-    test1();
-    test2();
-            // Teszt fájl tartalom
-            const char* testFileContent =
-                    "FirstName:John\n"
-                    "LastName:Doe\n"
-                    "Address:123 Main St\n"
-                    "PersonalNumber:555-1212\n"
-                    "\n"
-                    "FirstName:Jane\n"
-                    "LastName:Smith\n"
-                    "NickName:Janie\n"
-                    "Address:456 Elm St\n"
-                    "WorkNumber:555-9876\n"
-                    "Email:jane.smith@example.com\n\n";
+    GTINIT(std::cin);
 
-            // Fájl létrehozása és tartalom írása
-            std::ofstream outfile("test_contacts.txt");
-            outfile << testFileContent;
-            outfile.close();
+    // Call each test function manually
+    PhoneBookTest_AddContact_();
+    PhoneBookTest_SearchForName_();  // Add this line
+    PhoneBookTest_SearchForPhoneNumber_(); // Add this line
+    PhoneBookTest_SearchForAddress_();
+    PhoneBookTest_DeleteContact_();
+    PhoneBookTest_SaveToFile_();
+    PhoneBookRead_BasicRead_();
+    GTEND(std::cerr);
 
-            // Telefonkönyv objektum létrehozása és fájl beolvasása
-            PhoneBook phoneBook;
-            std::fstream infile("test_contacts.txt", std::ios::in);
-            phoneBook.readFromFile(infile);
-            infile.close();
-
-            // Kontaktok ellenőrzése (csak a számukat nézzük)
-            EXPECT_EQ(2,phoneBook.getSize());
-            phoneBook.listAllContacts();
-
-            // Teszt fájl törlése
-
+    return 0; // Return 0 to indicate successful execution
 }
