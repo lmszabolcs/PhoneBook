@@ -13,4 +13,4 @@ add_executable(PhoneBook
         memtrace.h
         string5.cpp
         string5.h
-        telefonkonyv.h)
+)
