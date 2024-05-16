@@ -156,7 +156,7 @@ MY_CUSTOM_TEST(PhoneBookTest, SaveToFile) {
     std::ostringstream testOutput;
     gtest_lite::ostreamRedir redirect(gtest_lite::test.os, testOutput);
 
-    std::fstream file("test_contacts1.txt", std::ios::out);
+    std::fstream file("test_contacts.txt", std::ios::out);
     book.saveToFile(file);
     file.close();
 
@@ -179,20 +179,20 @@ phonebook.listAllContacts();
 EXPECT_EQ(2, phonebook.getSize());
 Contact* contact1 = phonebook.getContacts()[0];
 EXPECT_EQ(ContactType::Personal, contact1->getType());
-EXPECT_EQ("John", contact1->getFirstname().c_str());
-EXPECT_EQ("Doe", contact1->getLastname().c_str());
-EXPECT_EQ("Johnny", contact1->getNickname().c_str());
-EXPECT_EQ("123 Main St", contact1->getAddress().c_str());
-EXPECT_EQ("555-1212", contact1->getNumber().c_str());
+EXPECT_STREQ("John", contact1->getFirstname().c_str());
+EXPECT_STREQ("Doe", contact1->getLastname().c_str());
+EXPECT_STREQ("Johnny", contact1->getNickname().c_str());
+EXPECT_STREQ("123 Main St", contact1->getAddress().c_str());
+EXPECT_STREQ("555-1212", contact1->getNumber().c_str());
 
 Contact* contact2 = phonebook.getContacts()[1];
 EXPECT_EQ(ContactType::Work, contact2->getType());
-EXPECT_EQ("Jane", contact2->getFirstname().c_str());
-EXPECT_EQ("Smith", contact2->getLastname().c_str());
-EXPECT_EQ("", contact2->getNickname().c_str());
-EXPECT_EQ("456 Elm St", contact2->getAddress().c_str());
-EXPECT_EQ("555-9876", contact2->getNumber().c_str());
-EXPECT_EQ("jane@example.com", contact2->getEmail().c_str());
+EXPECT_STREQ("Jane", contact2->getFirstname().c_str());
+EXPECT_STREQ("Smith", contact2->getLastname().c_str());
+EXPECT_STREQ("", contact2->getNickname().c_str());
+EXPECT_STREQ("456 Elm St", contact2->getAddress().c_str());
+EXPECT_STREQ("555-9876", contact2->getNumber().c_str());
+EXPECT_STREQ("jane@example.com", contact2->getEmail().c_str());
 
 // Close the file AFTER all assertions
 file.close();
@@ -202,7 +202,7 @@ file.close();
 
 
 int main() {
-    GTINIT(std::cin);
+    GTINIT(std::cin)
 
     // Call each test function manually
     PhoneBookTest_AddContact_();
@@ -212,7 +212,7 @@ int main() {
     PhoneBookTest_DeleteContact_();
     PhoneBookTest_SaveToFile_();
     PhoneBookRead_BasicRead_();
-    GTEND(std::cerr);
+    GTEND(std::cerr)
 
     return 0; // Return 0 to indicate successful execution
 }
