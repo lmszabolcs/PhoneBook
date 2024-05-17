@@ -39,14 +39,14 @@ public:
     String getName() const { return name.getName(); }
 
     /**
-    * @brief Gets the first name of the contact.
-    * @return The first name as a String.
+    * @brief Gets the firstname of the contact.
+    * @return The firstname as a String.
     */
     String getFirstname() const { return name.getFirstname(); }
 
     /**
-    * @brief Gets the last name of the contact.
-    * @return The last name as a String.
+    * @brief Gets the lastname of the contact.
+    * @return The lastname as a String.
     */
     String getLastname() const { return name.getLastname(); }
 
@@ -87,9 +87,11 @@ public:
      */
     virtual std::ostream &print(std::ostream &os);
 
+    /**
+    * @brief Destructor for the Contact class.
+    */
     virtual ~Contact() = default;
 };
-
 
 /**
  * @class PersonalContact
@@ -121,6 +123,9 @@ public:
      */
     String getNumber() const override { return personalNumber; }
 
+    /**
+    * @brief Destructor for the PersonalContact class.
+    */
     ~PersonalContact() override = default;
 };
 
@@ -162,6 +167,9 @@ public:
      */
     std::ostream &print(std::ostream &os) override;
 
+    /**
+    * @brief Destructor for the WorkContact class.
+    */
     ~WorkContact() override = default;
 };
 

@@ -1,4 +1,6 @@
 #include "contact.hpp"
+#include "memtrace.h"
+
 
 std::ostream &Contact::print(std::ostream &os) {
     os << "\n" << std::setw(20) << std::left << name.getName() << std::setw(20) << address << "\n";

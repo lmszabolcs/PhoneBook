@@ -90,23 +90,38 @@ int main() {
         }
             END
 
+    TEST(GenTombTest, RemoveFromEmpty) {
+            GenTomb<Contact*> emptyTomb; // Create an empty GenTomb
+
+            Contact* dummyContact = new PersonalContact(Name("Dummy", "Contact"), "Dummy Address", "Dummy Number");
+
+            // Attempt to remove a contact from the empty tomb
+            EXPECT_NO_THROW(emptyTomb.remove(dummyContact));
+
+            // Check that the size remains 0
+            EXPECT_EQ(size_t(0), emptyTomb.getSize());
+
+            delete dummyContact; // Clean up the dummy contact
+        } END
+
     // ------------------------ File I/O Tests ----------------------------
 
     TEST(FileIOTest, ReadAndWrite)
         {
             PhoneBook pb;
-            std::fstream file("test_phonebook.txt", std::ios::in | std::ios::out | std::ios::trunc);
+            std::fstream file("test_phonebook.txt", std::ios::in | std::ios::out);
 
+            // Test successful writing
             pb.addContact(new PersonalContact(Name("Eve", "Davis"), "567 Maple St.", "555-2345"));
-            pb.addContact(
-                    new WorkContact(Name("Charlie", "Brown"), "890 Cedar St.", "555-6789", "charlie@example.com"));
+            pb.addContact(new WorkContact(Name("Charlie", "Brown"), "890 Cedar St.", "555-6789", "charlie@example.com"));
+            ASSERT_NO_THROW(pb.saveToFile(file));  // Remove the << operator and string
 
-            pb.saveToFile(file);
-            file.clear();
-            file.seekg(0, std::ios::beg);
+            // Test successful reading
+            file.clear(); // Clear any error flags
+            file.seekg(0, std::ios::beg); // Rewind the file to the beginning
 
             PhoneBook pb2;
-            pb2.readFromFile(file);
+            ASSERT_NO_THROW(pb2.readFromFile(file));  // Remove the << operator and string
 
             EXPECT_EQ(2, pb2.getSize());
             EXPECT_STREQ("Eve Davis", pb2.getContacts()[0]->getName().c_str());
@@ -117,6 +132,25 @@ int main() {
         }
             END
 
+    TEST(FileIOTest, FailedRead)
+        {
+            PhoneBook pb;
+            std::fstream file("nonexistent_file.txt", std::ios::in);
+
+            EXPECT_THROW(pb.readFromFile(file), std::runtime_error);
+        }
+            END
+
+    TEST(FileIOTest, FailedWrite)
+        {
+            PhoneBook pb;
+            pb.addContact(new PersonalContact(Name("Test", "Person"), "Test Address", "Test Number"));
+
+            std::fstream file("/nonexistent_directory/test_phonebook.txt", std::ios::out);
+
+            EXPECT_THROW(pb.saveToFile(file), std::runtime_error);
+        }
+            END
 
     return 0;
 }

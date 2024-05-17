@@ -1,4 +1,5 @@
 #include "phonebook.hpp"
+#include "memtrace.h"
 
 void PhoneBook::listAllContacts() {
     for (size_t i = 0; i < contacts.getSize(); ++i) {

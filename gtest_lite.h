@@ -1,5 +1,6 @@
 #ifndef GTEST_LITE_H
 #define GTEST_LITE_H
+#include "memtrace.h"
 
 /**
  * \file gtest_lite.h  (v3/2019)

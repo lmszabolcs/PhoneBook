@@ -67,7 +67,6 @@ public:
 
     /**
     * @brief Destructor for the PhoneBook class.
-    *
     * This destructor is responsible for cleaning up the memory used by the PhoneBook object.
     */
     ~PhoneBook() {
