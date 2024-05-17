@@ -6,7 +6,7 @@
 #include "name.hpp"
 #include "contact.hpp"
 #include "memtrace.h"
-#define MEMTRACE
+
 int main() {
 
     // ------------------------ Name Class Tests ----------------------------
@@ -32,12 +32,13 @@ int main() {
     TEST(ContactTest, BaseClassFunctionality)
         {
             Name testName("Test", "Person");
-            std::string testAddress("123 Test Street");
+            String testAddress("123 Test Street");
 
             PersonalContact *testContact = new PersonalContact(testName, testAddress, "555-1234");
             EXPECT_STREQ("Test Person", testContact->getName().c_str());
             EXPECT_STREQ("123 Test Street", testContact->getAddress().c_str());
             EXPECT_EQ(ContactType::Personal, testContact->getType());
+            delete testContact;
         }
             END
 
@@ -60,12 +61,14 @@ int main() {
 
     // ------------------------ PhoneBook Class Tests ----------------------------
 
-    /*TEST(PhoneBookTest, AddSearchDelete)
+    TEST(PhoneBookTest, AddSearchDelete)
         {
+
             PhoneBook pb;
             pb.addContact(new PersonalContact(Name("Alice", "Johnson"), "789 Oak St.", "555-4321"));
             pb.addContact(new WorkContact(Name("Bob", "Williams"), "234 Pine St.", "555-7890", "bob@example.com"));
             pb.addContact(new WorkContact(Name("Bob", "Wilson"), "235 Pine St.", "555-7891", "bwilson@example.com"));
+            pb.listAllContacts();
 
             PhoneBook foundByName = pb.search("Alice");
             EXPECT_EQ(1, foundByName.getSize());
@@ -86,7 +89,7 @@ int main() {
             EXPECT_EQ(1, pb.getSize());
         }
             END
-*/
+
     // ------------------------ File I/O Tests ----------------------------
 
     TEST(FileIOTest, ReadAndWrite)
@@ -105,7 +108,7 @@ int main() {
             PhoneBook pb2;
             pb2.readFromFile(file);
 
-            EXPECT_EQ(size_t(2), pb2.getSize());
+            EXPECT_EQ(2, pb2.getSize());
             EXPECT_STREQ("Eve Davis", pb2.getContacts()[0]->getName().c_str());
             EXPECT_STREQ("555-2345", pb2.getContacts()[0]->getNumber().c_str());
             EXPECT_STREQ("Charlie Brown", pb2.getContacts()[1]->getName().c_str());
@@ -113,6 +116,7 @@ int main() {
             EXPECT_STREQ("charlie@example.com", pb2.getContacts()[1]->getEmail().c_str());
         }
             END
+
 
     return 0;
 }

@@ -1,6 +1,6 @@
 #include <iomanip>
 #include "name.hpp"
-
+#include "memtrace.h"
 #ifndef PHONEBOOK_CONTACT_HPP
 #define PHONEBOOK_CONTACT_HPP
 
@@ -19,7 +19,7 @@ enum ContactType {
 class Contact {
 private:
     Name name;     ///< Contact's name (object of the Name class)
-    std::string address; ///< Contact's address
+    String address; ///< Contact's address
     ContactType type; ///< Type of contact (Personal or Work)
 
 public:
@@ -29,38 +29,38 @@ public:
      * @param address Contact's address.
      * @param type Type of contact (Personal or Work).
      */
-    Contact(Name name, const std::string &address, const ContactType &type) :
-            name(std::move(name)), address(address), type(type) {}
+    Contact(const Name &name, const String &address, const ContactType &type)
+            : name(name), address(address), type(type) {}
 
     /**
    * @brief Gets the full formatted name of the contact.
-   * @return The full name as a std::string.
+   * @return The full name as a String.
    */
-    std::string getName() const { return name.getName(); }
+    String getName() const { return name.getName(); }
 
     /**
     * @brief Gets the first name of the contact.
-    * @return The first name as a std::string.
+    * @return The first name as a String.
     */
-    std::string getFirstname() const { return name.getFirstname(); }
+    String getFirstname() const { return name.getFirstname(); }
 
     /**
     * @brief Gets the last name of the contact.
-    * @return The last name as a std::string.
+    * @return The last name as a String.
     */
-    std::string getLastname() const { return name.getLastname(); }
+    String getLastname() const { return name.getLastname(); }
 
     /**
      * @brief Gets the nickname of the contact.
-     * @return The nickname as a std::string.
+     * @return The nickname as a String.
      */
-    std::string getNickname() const { return name.getNickname(); }
+    String getNickname() const { return name.getNickname(); }
 
     /**
     * @brief Gets the address of the contact.
-    * @return The address as a std::string.
+    * @return The address as a String.
     */
-    std::string getAddress() const { return address; }
+    String getAddress() const { return address; }
 
     /**
     * @brief Gets the type of the contact (Personal or Work).
@@ -70,15 +70,15 @@ public:
 
     /**
      * @brief Pure virtual function to get the phone number.
-     * @return Phone number as a std::string. Must be implemented by derived classes.
+     * @return Phone number as a String. Must be implemented by derived classes.
      */
-    virtual std::string getNumber() const = 0;
+    virtual String getNumber() const = 0;
 
     /**
-     * @brief Virtual function to get the email (default to empty std::string).
-     * @return Email address as a std::string. Can be overridden by derived classes.
+     * @brief Virtual function to get the email (default to empty String).
+     * @return Email address as a String. Can be overridden by derived classes.
      */
-    virtual std::string getEmail() const { return ""; }
+    virtual String getEmail() const { return ""; }
 
     /**
      * @brief Virtual function to print contact details to an output stream.
@@ -86,6 +86,8 @@ public:
      * @return Reference to the output stream.
      */
     virtual std::ostream &print(std::ostream &os);
+
+    virtual ~Contact() = default;
 };
 
 
@@ -94,7 +96,7 @@ public:
  * @brief Represents a personal contact in the phone book.
  */
 class PersonalContact : public Contact {
-    std::string personalNumber; ///< Personal phone number of the contact
+    String personalNumber; ///< Personal phone number of the contact
 
 public:
     /**
@@ -103,7 +105,7 @@ public:
      * @param address Contact's address.
      * @param personalNumber Contact's personal phone number.
      */
-    PersonalContact(const Name &name, const std::string &address, const std::string &personalNumber)
+    PersonalContact(const Name &name, const String &address, const String &personalNumber)
             : Contact(name, address, ContactType::Personal), personalNumber(personalNumber) {}
 
     /**
@@ -115,9 +117,11 @@ public:
 
     /**
      * @brief Gets the personal phone number.
-     * @return Personal phone number as a std::string.
+     * @return Personal phone number as a String.
      */
-    std::string getNumber() const override { return personalNumber; }
+    String getNumber() const override { return personalNumber; }
+
+    ~PersonalContact() override = default;
 };
 
 /**
@@ -125,8 +129,8 @@ public:
  * @brief Represents a work contact in the phone book.
  */
 class WorkContact : public Contact {
-    std::string workNumber; ///< Work phone number of the contact
-    std::string email;      ///< Email address of the contact
+    String workNumber; ///< Work phone number of the contact
+    String email;      ///< Email address of the contact
 
 public:
     /**
@@ -136,20 +140,20 @@ public:
      * @param workNumber Contact's work phone number.
      * @param email Contact's email address.
      */
-    WorkContact(const Name &name, const std::string &address, const std::string &workNumber, const std::string &email)
+    WorkContact(const Name &name, const String &address, const String &workNumber, const String &email)
             : Contact(name, address, ContactType::Work), workNumber(workNumber), email(email) {}
 
     /**
      * @brief Gets the work phone number.
-     * @return Work phone number as a std::string.
+     * @return Work phone number as a String.
      */
-    std::string getNumber() const override { return workNumber; }
+    String getNumber() const override { return workNumber; }
 
     /**
      * @brief Gets the email address.
-     * @return Email address as a std::string.
+     * @return Email address as a String.
      */
-    std::string getEmail() const override { return email; }
+    String getEmail() const override { return email; }
 
     /**
      * @brief Overrides the print function to display work contact details.
@@ -157,6 +161,8 @@ public:
      * @return Reference to the output stream.
      */
     std::ostream &print(std::ostream &os) override;
+
+    ~WorkContact() override = default;
 };
 
 #endif //PHONEBOOK_CONTACT_HPP

@@ -2,7 +2,6 @@
 #define GENTOMB_HPP
 
 #include "memtrace.h"
-
 /**
  * @class GenTomb
  * @brief A generic, dynamically-sized array template class.
@@ -11,7 +10,7 @@
 template<typename T>
 class GenTomb {
 private:
-    int size; ///< The current number of elements in the array.
+    size_t size; ///< The current number of elements in the array.
     T *data;  ///< Pointer to the dynamically allocated array.
 
 public:
@@ -58,16 +57,18 @@ public:
      * @param item The element to remove.
      */
     void remove(T item) {
-        T *temp = new T[size - 1];
         int j = 0;
         for (size_t i = 0; i < size; i++) {
-            if (data[i] != item && size != 0) {
-                temp[j++] = data[i];
+            if (data[i] != item) {
+                data[j++] = data[i];
             }
         }
-        size--;
-        delete[] data;
-        data = temp;
+
+        size = j;
+        if (j == 0) {
+            delete[] data;
+            data = nullptr;
+        }
     }
 
     /**
@@ -75,7 +76,7 @@ public:
      * @param index The index of the element to access.
      * @return A reference to the element at the specified index.
      */
-    T &operator[](int index) const { return data[index]; }
+    T &operator[](size_t index) const { return data[index]; }
 
     /**
      * @brief Assignment operator overload.
@@ -93,7 +94,7 @@ public:
      * @brief Gets the current size of the array.
      * @return The number of elements in the array.
      */
-    int getSize() const { return size; }
+    size_t getSize() const { return size; }
 };
 
 #endif // GENTOMB_HPP
