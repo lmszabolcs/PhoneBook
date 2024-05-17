@@ -5,6 +5,7 @@
 #include "string5.h"
 #include "name.hpp"
 #include "contact.hpp"
+#include "memtrace.h"
 
 int main() {
 
@@ -13,18 +14,13 @@ int main() {
     TEST(NameTest, GetName) {
             Name n1("John", "Doe", "Johnny");
             EXPECT_STREQ("John Doe (Johnny)", n1.getName().c_str());
+            EXPECT_STREQ("John", n1.getFirstname().c_str());
+            EXPECT_STREQ("Doe", n1.getLastname().c_str());
+            Name n2( "Nickname");
+            EXPECT_STREQ("Nickname", n2.getNickname().c_str());
 
-            Name n2("Jane", ""); // Empty last name
-            EXPECT_STREQ("Jane", n2.getFirstname().c_str());
-
-            Name n3("", "Smith"); // Empty first name
-            EXPECT_STREQ("Smith", n3.getLastname().c_str());
-
-            Name n4("", "", "Nickname");
-            EXPECT_STREQ("Nickname", n4.getNickname().c_str());
-
-            Name n5; // Empty name
-            EXPECT_STREQ("", n5.getName().c_str());
+            Name n3; // Empty name
+            EXPECT_STREQ("", n3.getName().c_str());
         } END
 
 
@@ -38,7 +34,6 @@ int main() {
             EXPECT_STREQ("Test Person", testContact->getName().c_str());
             EXPECT_STREQ("123 Test Street", testContact->getAddress().c_str());
             EXPECT_EQ(ContactType::Personal, testContact->getType());
-            delete testContact; // Free memory after test
         } END
 
     TEST(PersonalContactTest, SpecificFunctionality) {

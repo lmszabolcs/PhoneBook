@@ -10,7 +10,7 @@ private:
 
 public:
     // Konstruktor: inicializálja a méretet és lefoglalja a memóriát
-    GenTomb() : size(0), data(nullptr) {}
+    GenTomb() : size(0) {data = new T[size];}
 
     // Destruktor: felszabadítja a lefoglalt memóriát
     ~GenTomb() { delete[] data; }
@@ -34,16 +34,24 @@ public:
     }
 
     // Elem törlése a tömbből
-    void remove(T item) {
+    void remove(T item)
+    {
         T* temp = new T[size-1];
-        for (int i = 0, j = 0; i < size; i++, j++)
+        int j = 0;
+        for (int i = 0; i < size; i++)
+        {
             if (data[i] != item && size != 0)
-                temp[j] = data[i];
-        --size;
+            {
+                temp[j++] = data[i];
+            }
+        }
+        size--;
         delete[] data;
         data = temp;
 
     }
+
+
 
     T &operator[](int index) const { return data[index]; }
 

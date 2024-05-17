@@ -11,13 +11,12 @@ PhoneBook PhoneBook::search(const String& param) const {
     const char* paramCStr = param.c_str();
 
     for (size_t i = 0; i < contacts.getSize(); ++i) {
-        Contact* contact = contacts[i];
 
         // Case-insensitive comparison using strcasestr (if available)
-        if (strcasestr(contact->getName().c_str(), paramCStr) != nullptr ||
-            strcasestr(contact->getNumber().c_str(), paramCStr) != nullptr ||
-            strcasestr(contact->getAddress().c_str(), paramCStr) != nullptr) {
-            results.addContact(contact); // Create a deep copy of the contact
+        if (strcasestr(contacts[i]->getName().c_str(), paramCStr) != nullptr ||
+            strcasestr(contacts[i]->getNumber().c_str(), paramCStr) != nullptr ||
+            strcasestr(contacts[i]->getAddress().c_str(), paramCStr) != nullptr) {
+            results.addContact(contacts[i]); // Create a deep copy of the contact
         }
     }
     return results;

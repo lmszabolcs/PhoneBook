@@ -1,4 +1,5 @@
 #include <iomanip>
+#include <utility>
 #include "name.hpp"
 
 #ifndef PHONEBOOK_CONTACT_HPP
@@ -29,8 +30,8 @@ public:
      * @param address Contact's address.
      * @param type Type of contact (Personal or Work).
      */
-    Contact(const Name &name, const String &address, const ContactType &type) :
-            name(name), address(address), type(type) {}
+    Contact(Name name, const String &address, const ContactType &type) :
+            name(std::move(name)), address(address), type(type) {}
 
     // Getters for name components
     String getName() const { return name.getName(); }
