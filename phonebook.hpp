@@ -24,7 +24,7 @@ public:
      * @brief Get the number of contacts in the phone book.
      * @return The size of the contact list.
      */
-    int getSize() const { return contacts.getSize(); }
+    size_t getSize() const { return contacts.getSize(); }
 
     /**
      * @brief Add a new contact to the phone book.

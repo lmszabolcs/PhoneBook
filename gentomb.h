@@ -11,7 +11,7 @@
 template<typename T>
 class GenTomb {
 private:
-    int size; ///< The current number of elements in the array.
+    size_t size; ///< The current number of elements in the array.
     T *data;  ///< Pointer to the dynamically allocated array.
 
 public:
@@ -93,7 +93,7 @@ public:
      * @brief Gets the current size of the array.
      * @return The number of elements in the array.
      */
-    int getSize() const { return size; }
+    size_t getSize() const { return size; }
 };
 
 #endif // GENTOMB_HPP
