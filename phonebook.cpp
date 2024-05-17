@@ -6,10 +6,10 @@ void PhoneBook::listAllContacts() {
     }
 }
 
-PhoneBook PhoneBook::searchForName(const String &nev) const {
+PhoneBook PhoneBook::searchForName(const String &name) const {
     PhoneBook temp;
     for (size_t i = 0; i < contacts.getSize(); ++i) {
-        if (strstr(contacts[i]->getName().c_str(), nev.c_str()) != nullptr) {
+        if (strstr(contacts[i]->getName().c_str(), name.c_str()) != nullptr) {
             temp.addContact(contacts[i]);
         }
     }
@@ -17,10 +17,10 @@ PhoneBook PhoneBook::searchForName(const String &nev) const {
 }
 
 
-PhoneBook PhoneBook::searchForPhoneNumber(const String &telefonszam) const {
+PhoneBook PhoneBook::searchForPhoneNumber(const String &number) const {
     PhoneBook temp;
     for (size_t i = 0; i < contacts.getSize(); ++i) {
-        if (strstr(contacts[i]->getNumber().c_str(), telefonszam.c_str()) != nullptr) {
+        if (strstr(contacts[i]->getNumber().c_str(), number.c_str()) != nullptr) {
             temp.addContact(contacts[i]);
         }
     }
@@ -98,11 +98,9 @@ void PhoneBook::saveToFile(std::fstream &file) const {
         file << contact->getLastname() << std::endl;
         file << contact->getNickname() << std::endl;
         file << contact->getAddress() << std::endl;
+        file << contact->getNumber() << std::endl;
 
-        if (contact->getType() == ContactType::Personal) {
-            file << contact->getNumber() << std::endl;
-        } else {
-            file << contact->getNumber() << std::endl;
+        if (contact->getType() == Work) {
             file << contact->getEmail() << std::endl;
         }
         file << std::endl;

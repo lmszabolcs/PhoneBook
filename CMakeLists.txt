@@ -13,4 +13,10 @@ add_executable(PhoneBook
         memtrace.h
         string5.cpp
         string5.h
+        phonebook.cpp
+        phonebook.hpp
+        contact.cpp
+        contact.hpp
+        name.cpp
+        name.hpp
 )
