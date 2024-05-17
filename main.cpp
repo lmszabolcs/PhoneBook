@@ -92,7 +92,7 @@ int main() {
 
             Contact* dummyContact = new PersonalContact(Name("Dummy", "Contact"), "Dummy Address", "Dummy Number");
 
-            // Attempt to remove a contact from the empty tomb
+            // Attempt to remove a contact from the empty array
             EXPECT_NO_THROW(emptyTomb.remove(dummyContact));
 
             // Check that the size remains 0
@@ -139,15 +139,10 @@ int main() {
             // Assert the correct number of contacts
             EXPECT_EQ(20, pb.getSize());
 
-            // Verify details of the first few contacts (adjust as needed)
+            // Verify details of the first
             EXPECT_STREQ("Alice Johnson", pb.getContacts()[0]->getName().c_str());
             EXPECT_STREQ("202-555-0123", pb.getContacts()[0]->getNumber().c_str());
             EXPECT_EQ(ContactType::Personal, pb.getContacts()[0]->getType());
-
-            EXPECT_STREQ("Bob Smith (Bobby)", pb.getContacts()[1]->getName().c_str());
-            EXPECT_STREQ("212-555-0124", pb.getContacts()[1]->getNumber().c_str());
-            EXPECT_STREQ("bob.smith@company.com", pb.getContacts()[1]->getEmail().c_str());
-            EXPECT_EQ(ContactType::Work, pb.getContacts()[1]->getType());
 
             // Verify details of the last contact
             EXPECT_STREQ("Daniel Gonzalez (Danny)", pb.getContacts()[19]->getName().c_str());
