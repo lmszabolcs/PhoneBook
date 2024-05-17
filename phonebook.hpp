@@ -42,13 +42,13 @@ public:
      * @param param The name, number or address to search for.
      * @return A new PhoneBook object containing matching contacts.
      */
-    PhoneBook search(const String &param) const;
+    PhoneBook search(const std::string &param) const;
 
     /**
      * @brief Delete one or multiple contacts based on name or phone number.
      * @param param The name or phone number of the contacts to delete.
      */
-    void deleteContact(const String &param);
+    void deleteContact(const std::string &param);
 
     /**
      * @brief Read contacts from a file.

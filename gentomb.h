@@ -33,7 +33,7 @@ public:
      * @param copy The GenTomb to copy from.
      */
     GenTomb(const GenTomb &copy) : size(copy.size), data(new T[copy.size]) {
-        for (int i = 0; i < size; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             data[i] = copy.data[i];
         }
     }
@@ -44,7 +44,7 @@ public:
      */
     void add(T item) {
         T *newData = new T[size + 1];
-        for (int i = 0; i < size; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             newData[i] = data[i];
         }
         newData[size] = item;
@@ -60,7 +60,7 @@ public:
     void remove(T item) {
         T *temp = new T[size - 1];
         int j = 0;
-        for (int i = 0; i < size; i++) {
+        for (size_t i = 0; i < size; i++) {
             if (data[i] != item && size != 0) {
                 temp[j++] = data[i];
             }
@@ -83,7 +83,7 @@ public:
      * @return A reference to the modified GenTomb object.
      */
     GenTomb &operator=(T temp) {
-        for (int i = 0; i < size; i++) {
+        for (size_t i = 0; i < size; i++) {
             data[i] = temp;
         }
         return *this;

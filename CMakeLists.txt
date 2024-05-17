@@ -5,6 +5,9 @@ set(CMAKE_CXX_STANDARD 14)
 
 include_directories(.)
 
+add_library(memtrace STATIC memtrace.cpp)
+
+
 add_executable(PhoneBook
         gentomb.h
         gtest_lite.h

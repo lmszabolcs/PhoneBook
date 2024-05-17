@@ -6,7 +6,7 @@ void PhoneBook::listAllContacts() {
     }
 }
 
-PhoneBook PhoneBook::search(const String &param) const {
+PhoneBook PhoneBook::search(const std::string &param) const {
     PhoneBook results;
     const char *paramCStr = param.c_str();
 
@@ -21,7 +21,7 @@ PhoneBook PhoneBook::search(const String &param) const {
     return results;
 }
 
-void PhoneBook::deleteContact(const String &param) {
+void PhoneBook::deleteContact(const std::string &param) {
     PhoneBook foundContacts = search(param);
 
     for (size_t i = 0; i < foundContacts.contacts.getSize(); ++i)
@@ -41,25 +41,25 @@ void PhoneBook::readFromFile(std::fstream &file) {
         ContactType type = static_cast<ContactType>(typeInt);
 
         file.getline(buffer, sizeof(buffer));
-        String firstname(buffer);
+        std::string firstname(buffer);
 
         file.getline(buffer, sizeof(buffer));
-        String lastname(buffer);
+        std::string lastname(buffer);
 
         file.getline(buffer, sizeof(buffer));
-        String nickname(buffer);
+        std::string nickname(buffer);
 
         file.getline(buffer, sizeof(buffer));
-        String address(buffer);
+        std::string address(buffer);
 
         file.getline(buffer, sizeof(buffer));
-        String number(buffer);
+        std::string number(buffer);
 
         if (type == ContactType::Personal) {
             contacts.add(new PersonalContact(Name(firstname, lastname, nickname), address, number));
         } else if (type == ContactType::Work) {
             file.getline(buffer, sizeof(buffer));
-            String email(buffer);
+            std::string email(buffer);
             contacts.add(new WorkContact(Name(firstname, lastname, nickname), address, number, email));
         }
         file.getline(buffer, sizeof(buffer));
