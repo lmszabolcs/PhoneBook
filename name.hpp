@@ -15,17 +15,23 @@ private:
 
 public:
     /**
+    * @brief Default constructor for Name.
+    * This constructor initializes an empty Name object with empty strings for the first name, last name, and nickname.
+    */
+    Name() : firstname(""), lastname(""), nickname("") {}
+    /**
      * @brief Constructor for Name when only a nickname is available.
      * @param nickname The person's nickname.
      */
-    Name(const String &nickname) : nickname(String(nickname)) {}
+    Name(const String &nickname) : firstname(""), lastname(""), nickname(String(nickname)) {}
 
     /**
      * @brief Constructor for Name when first name and last name are available.
      * @param firstname The person's first name.
      * @param lastname The person's last name.
      */
-    Name(const String &firstname, const String &lastname) : firstname(String(firstname)), lastname(String(lastname)) {}
+    Name(const String &firstname, const String &lastname) : firstname(String(firstname)), lastname(String(lastname)),
+                                                            nickname("") {}
 
     /**
      * @brief Constructor for Name when first name, last name, and nickname are available.

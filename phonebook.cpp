@@ -6,43 +6,25 @@ void PhoneBook::listAllContacts() {
     }
 }
 
-PhoneBook PhoneBook::searchForName(const String &name) const {
-    PhoneBook temp;
+PhoneBook PhoneBook::search(const String& param) const {
+    PhoneBook results;
+    const char* paramCStr = param.c_str();
+
     for (size_t i = 0; i < contacts.getSize(); ++i) {
-        if (strstr(contacts[i]->getName().c_str(), name.c_str()) != nullptr) {
-            temp.addContact(contacts[i]);
+        Contact* contact = contacts[i];
+
+        // Case-insensitive comparison using strcasestr (if available)
+        if (strcasestr(contact->getName().c_str(), paramCStr) != nullptr ||
+            strcasestr(contact->getNumber().c_str(), paramCStr) != nullptr ||
+            strcasestr(contact->getAddress().c_str(), paramCStr) != nullptr) {
+            results.addContact(contact); // Create a deep copy of the contact
         }
     }
-    return temp;
-}
-
-
-PhoneBook PhoneBook::searchForPhoneNumber(const String &number) const {
-    PhoneBook temp;
-    for (size_t i = 0; i < contacts.getSize(); ++i) {
-        if (strstr(contacts[i]->getNumber().c_str(), number.c_str()) != nullptr) {
-            temp.addContact(contacts[i]);
-        }
-    }
-    return temp;
-}
-
-PhoneBook PhoneBook::searchForAddress(const String &address) const {
-    PhoneBook temp;
-    for (size_t i = 0; i < contacts.getSize(); ++i) {
-        if (strstr(contacts[i]->getAddress().c_str(), address.c_str()) != nullptr) {
-            temp.addContact(contacts[i]);
-        }
-    }
-    return temp;
+    return results;
 }
 
 void PhoneBook::deleteContact(const String &param) {
-    PhoneBook foundContacts = searchForName(param);
-    PhoneBook temp = searchForPhoneNumber(param);
-
-    for (size_t i = 0; i < temp.getSize(); ++i)
-        foundContacts.addContact(temp.contacts[i]);
+    PhoneBook foundContacts = search(param);
 
     for (size_t i = 0; i < foundContacts.contacts.getSize(); ++i)
         contacts.remove(foundContacts.contacts[i]);

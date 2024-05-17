@@ -38,25 +38,11 @@ public:
     void listAllContacts();
 
     /**
-     * @brief Search for contacts by name.
-     * @param name The name to search for.
+     * @brief Search for contacts by name, number or address.
+     * @param param The name, number or address to search for.
      * @return A new PhoneBook object containing matching contacts.
      */
-    PhoneBook searchForName(const String &name) const;
-
-    /**
-     * @brief Search for contacts by phone number.
-     * @param number The phone number to search for.
-     * @return A new PhoneBook object containing matching contacts.
-     */
-    PhoneBook searchForPhoneNumber(const String &number) const;
-
-    /**
-     * @brief Search for contacts by address.
-     * @param address The address to search for.
-     * @return A new PhoneBook object containing matching contacts.
-     */
-    PhoneBook searchForAddress(const String &address) const;
+    PhoneBook search(const String &param) const;
 
     /**
      * @brief Delete one or multiple contacts based on name or phone number.
