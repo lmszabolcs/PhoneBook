@@ -17,6 +17,7 @@ int main() {
             EXPECT_STREQ("John Doe (Johnny)", n1.getName().c_str());
             EXPECT_STREQ("John", n1.getFirstname().c_str());
             EXPECT_STREQ("Doe", n1.getLastname().c_str());
+
             Name n2("Nickname");
             EXPECT_STREQ("Nickname", n2.getNickname().c_str());
 

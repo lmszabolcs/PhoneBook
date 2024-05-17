@@ -5,7 +5,7 @@
 
 /**
  * @class GenTomb
- * @brief A generic, dynamically-sized array (tomb) template class.
+ * @brief A generic, dynamically-sized array template class.
  * @tparam T The type of elements stored in the array.
  */
 template<typename T>
@@ -79,7 +79,6 @@ public:
 
     /**
      * @brief Assignment operator overload.
-     * Assigns a specific value to all elements in the array.
      * @param temp The value to assign.
      * @return A reference to the modified GenTomb object.
      */

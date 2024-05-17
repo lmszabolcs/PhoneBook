@@ -46,7 +46,7 @@ public:
 
     /**
      * @brief Delete one or multiple contacts based on name or phone number.
-     * @param param The name or phone number of the contact to delete.
+     * @param param The name or phone number of the contacts to delete.
      */
     void deleteContact(const String &param);
 

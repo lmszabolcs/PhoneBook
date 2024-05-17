@@ -9,8 +9,8 @@
  */
 class Name {
 private:
-    String firstname; ///< First name of the person
-    String lastname;  ///< Last name of the person
+    String firstname; ///< Firstname of the person
+    String lastname;  ///< Lastname of the person
     String nickname;  ///< Nickname of the person
 
 public:

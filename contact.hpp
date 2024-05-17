@@ -18,7 +18,7 @@ enum ContactType {
  * @brief Abstract base class for representing a contact in a phone book.
  */
 class Contact {
-protected:
+private:
     Name name;     ///< Contact's name (object of the Name class)
     String address; ///< Contact's address
     ContactType type; ///< Type of contact (Personal or Work)
