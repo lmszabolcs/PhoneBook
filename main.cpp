@@ -5,8 +5,6 @@
 #include "string5.h"
 #include "name.hpp"
 #include "contact.hpp"
-#include "memtrace.h"
-
 int main() {
 
     // ------------------------ Name Class Tests ----------------------------
@@ -68,7 +66,6 @@ int main() {
             pb.addContact(new PersonalContact(Name("Alice", "Johnson"), "789 Oak St.", "555-4321"));
             pb.addContact(new WorkContact(Name("Bob", "Williams"), "234 Pine St.", "555-7890", "bob@example.com"));
             pb.addContact(new WorkContact(Name("Bob", "Wilson"), "235 Pine St.", "555-7891", "bwilson@example.com"));
-            pb.listAllContacts();
 
             PhoneBook foundByName = pb.search("Alice");
             EXPECT_EQ(1, foundByName.getSize());
@@ -114,14 +111,14 @@ int main() {
             // Test successful writing
             pb.addContact(new PersonalContact(Name("Eve", "Davis"), "567 Maple St.", "555-2345"));
             pb.addContact(new WorkContact(Name("Charlie", "Brown"), "890 Cedar St.", "555-6789", "charlie@example.com"));
-            ASSERT_NO_THROW(pb.saveToFile(file));  // Remove the << operator and string
+            ASSERT_NO_THROW(pb.saveToFile(file));
 
             // Test successful reading
             file.clear(); // Clear any error flags
             file.seekg(0, std::ios::beg); // Rewind the file to the beginning
 
             PhoneBook pb2;
-            ASSERT_NO_THROW(pb2.readFromFile(file));  // Remove the << operator and string
+            ASSERT_NO_THROW(pb2.readFromFile(file));
 
             EXPECT_EQ(2, pb2.getSize());
             EXPECT_STREQ("Eve Davis", pb2.getContacts()[0]->getName().c_str());
@@ -131,6 +128,38 @@ int main() {
             EXPECT_STREQ("charlie@example.com", pb2.getContacts()[1]->getEmail().c_str());
         }
             END
+
+    TEST(FileIOTest, ReadLargeFile) {
+            PhoneBook pb;
+
+            // Test reading from the larger file
+            std::fstream largeFile("phonebook_large.txt", std::ios::in);
+            ASSERT_NO_THROW(pb.readFromFile(largeFile));
+
+            // Assert the correct number of contacts
+            EXPECT_EQ(20, pb.getSize());
+
+            // Verify details of the first few contacts (adjust as needed)
+            EXPECT_STREQ("Alice Johnson", pb.getContacts()[0]->getName().c_str());
+            EXPECT_STREQ("202-555-0123", pb.getContacts()[0]->getNumber().c_str());
+            EXPECT_EQ(ContactType::Personal, pb.getContacts()[0]->getType());
+
+            EXPECT_STREQ("Bob Smith (Bobby)", pb.getContacts()[1]->getName().c_str());
+            EXPECT_STREQ("212-555-0124", pb.getContacts()[1]->getNumber().c_str());
+            EXPECT_STREQ("bob.smith@company.com", pb.getContacts()[1]->getEmail().c_str());
+            EXPECT_EQ(ContactType::Work, pb.getContacts()[1]->getType());
+
+            // Verify details of the last contact
+            EXPECT_STREQ("Daniel Gonzalez (Danny)", pb.getContacts()[19]->getName().c_str());
+            EXPECT_STREQ("503-555-0142", pb.getContacts()[19]->getNumber().c_str());
+            EXPECT_STREQ("daniel.gonzalez@firm.biz", pb.getContacts()[19]->getEmail().c_str());
+            EXPECT_EQ(ContactType::Work, pb.getContacts()[19]->getType());
+
+            // List all contacts to visually verify the contents
+            std::cout << "\nListing all contacts after reading from file:\n";
+            pb.listAllContacts();
+        } END
+
 
     TEST(FileIOTest, FailedRead)
         {

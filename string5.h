@@ -7,7 +7,6 @@
  */
 
 #include <iostream>
-#include "memtrace.h"
 
 /**
  * String osztály.

@@ -2,7 +2,6 @@
 #include <fstream>
 #include "contact.hpp"
 #include "gentomb.h"
-#include "memtrace.h"
 
 #ifndef PHONEBOOK_PHONEBOOK_HPP
 #define PHONEBOOK_PHONEBOOK_HPP

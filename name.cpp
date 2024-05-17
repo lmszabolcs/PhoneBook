@@ -1,5 +1,4 @@
 #include "name.hpp"
-#include "memtrace.h"
 
 String Name::getName() const {
     if (firstname.size() > 0 && lastname.size() > 0) {

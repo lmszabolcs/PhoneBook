@@ -1,6 +1,5 @@
 #ifndef GENTOMB_HPP
 #define GENTOMB_HPP
-
 #include "memtrace.h"
 /**
  * @class GenTomb
