@@ -32,9 +32,6 @@ public:
      */
     void addContact(Contact *contact) { contacts.add(contact); }
 
-    ~PhoneBook() {
-    }
-
     /**
      * @brief List and print all contacts in the phone book to the console.
      */

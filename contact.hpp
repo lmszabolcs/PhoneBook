@@ -33,17 +33,40 @@ public:
     Contact(Name name, const String &address, const ContactType &type) :
             name(std::move(name)), address(address), type(type) {}
 
-    // Getters for name components
+    /**
+   * @brief Gets the full formatted name of the contact.
+   * @return The full name as a String.
+   */
     String getName() const { return name.getName(); }
 
+    /**
+    * @brief Gets the first name of the contact.
+    * @return The first name as a String.
+    */
     String getFirstname() const { return name.getFirstname(); }
 
+    /**
+    * @brief Gets the last name of the contact.
+    * @return The last name as a String.
+    */
     String getLastname() const { return name.getLastname(); }
 
+    /**
+     * @brief Gets the nickname of the contact.
+     * @return The nickname as a String.
+     */
     String getNickname() const { return name.getNickname(); }
 
+    /**
+    * @brief Gets the address of the contact.
+    * @return The address as a String.
+    */
     String getAddress() const { return address; }
 
+    /**
+    * @brief Gets the type of the contact (Personal or Work).
+    * @return The contact type as a ContactType enum value.
+    */
     ContactType getType() const { return type; }
 
     /**
