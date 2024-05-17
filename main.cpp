@@ -109,7 +109,7 @@ int main() {
     TEST(FileIOTest, ReadAndWrite)
         {
             PhoneBook pb;
-            std::fstream file("test_phonebook.txt", std::ios::in | std::ios::out);
+            std::fstream file("test_phonebook.txt", std::ios::in | std::ios::out | std::ios::trunc);
 
             // Test successful writing
             pb.addContact(new PersonalContact(Name("Eve", "Davis"), "567 Maple St.", "555-2345"));
