@@ -19,6 +19,7 @@ public:
     * This constructor initializes an empty Name object with empty strings for the first name, last name, and nickname.
     */
     Name() : firstname(""), lastname(""), nickname("") {}
+
     /**
      * @brief Constructor for Name when only a nickname is available.
      * @param nickname The person's nickname.

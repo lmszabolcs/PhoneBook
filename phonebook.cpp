@@ -6,9 +6,9 @@ void PhoneBook::listAllContacts() {
     }
 }
 
-PhoneBook PhoneBook::search(const String& param) const {
+PhoneBook PhoneBook::search(const String &param) const {
     PhoneBook results;
-    const char* paramCStr = param.c_str();
+    const char *paramCStr = param.c_str();
 
     for (size_t i = 0; i < contacts.getSize(); ++i) {
 

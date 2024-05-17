@@ -1,66 +1,99 @@
 #ifndef GENTOMB_HPP
 #define GENTOMB_HPP
+
 #include "memtrace.h"
 
+/**
+ * @class GenTomb
+ * @brief A generic, dynamically-sized array (tomb) template class.
+ * @tparam T The type of elements stored in the array.
+ */
 template<typename T>
 class GenTomb {
 private:
-    int size; // Tömb mérete
-    T *data; // Pointer a dinamikusan lefoglalt tömbre
+    int size; ///< The current number of elements in the array.
+    T *data;  ///< Pointer to the dynamically allocated array.
 
 public:
-    // Konstruktor: inicializálja a méretet és lefoglalja a memóriát
-    GenTomb() : size(0) {data = new T[size];}
+    /**
+     * @brief Default constructor.
+     * Creates an empty GenTomb with size 0.
+     */
+    GenTomb() : size(0) { data = new T[size]; }
 
-    // Destruktor: felszabadítja a lefoglalt memóriát
+    /**
+     * @brief Destructor.
+     * Deallocates the dynamically allocated memory.
+     */
     ~GenTomb() { delete[] data; }
 
-    //Konstruktor: átmásolja egy másik azonos típusú tömbből az elemeket
+    /**
+     * @brief Copy constructor.
+     * Creates a new GenTomb as a deep copy of another GenTomb.
+     * @param copy The GenTomb to copy from.
+     */
     GenTomb(const GenTomb &copy) : size(copy.size), data(new T[copy.size]) {
         for (int i = 0; i < size; ++i) {
             data[i] = copy.data[i];
         }
     }
 
-    // Elem hozzáadása a tömbhöz
+    /**
+     * @brief Adds an element to the end of the array.
+     * @param item The element to add.
+     */
     void add(T item) {
         T *newData = new T[size + 1];
-        for (int i = 0; i < size; ++i)
+        for (int i = 0; i < size; ++i) {
             newData[i] = data[i];
+        }
         newData[size] = item;
         delete[] data;
         data = newData;
         ++size;
     }
 
-    // Elem törlése a tömbből
-    void remove(T item)
-    {
-        T* temp = new T[size-1];
+    /**
+     * @brief Removes the first occurrence of an element from the array.
+     * @param item The element to remove.
+     */
+    void remove(T item) {
+        T *temp = new T[size - 1];
         int j = 0;
-        for (int i = 0; i < size; i++)
-        {
-            if (data[i] != item && size != 0)
-            {
+        for (int i = 0; i < size; i++) {
+            if (data[i] != item && size != 0) {
                 temp[j++] = data[i];
             }
         }
         size--;
         delete[] data;
         data = temp;
-
     }
 
-
-
+    /**
+     * @brief Accesses an element at a specific index.
+     * @param index The index of the element to access.
+     * @return A reference to the element at the specified index.
+     */
     T &operator[](int index) const { return data[index]; }
 
+    /**
+     * @brief Assignment operator overload.
+     * Assigns a specific value to all elements in the array.
+     * @param temp The value to assign.
+     * @return A reference to the modified GenTomb object.
+     */
     GenTomb &operator=(T temp) {
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < size; i++) {
             data[i] = temp;
+        }
         return *this;
     }
 
+    /**
+     * @brief Gets the current size of the array.
+     * @return The number of elements in the array.
+     */
     int getSize() const { return size; }
 };
 

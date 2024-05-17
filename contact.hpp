@@ -35,10 +35,15 @@ public:
 
     // Getters for name components
     String getName() const { return name.getName(); }
+
     String getFirstname() const { return name.getFirstname(); }
+
     String getLastname() const { return name.getLastname(); }
+
     String getNickname() const { return name.getNickname(); }
+
     String getAddress() const { return address; }
+
     ContactType getType() const { return type; }
 
     /**
