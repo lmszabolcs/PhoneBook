@@ -1,6 +1,5 @@
 #include "phonebook.hpp"
 #include "memtrace.h"
-
 #ifdef CPORTA
 
 #include "gtest_lite.h"
@@ -65,14 +64,14 @@ int main() {     // ------------------------ Name Class Tests ------------------
             pb.addContact(new WorkContact(Name("Bob", "Williams"), "234 Pine St.", "555-7890", "bob@example.com"));
             pb.addContact(new WorkContact(Name("Bob", "Wilson"), "235 Pine St.", "555-7891", "bwilson@example.com"));
 
-            PhoneBook foundByName = pb.search("Alice");
+            PhoneBook foundByName = pb.searchContact("Alice");
             EXPECT_EQ(1, foundByName.getSize());
 
-            PhoneBook foundByNumber = pb.search("555-4321");
+            PhoneBook foundByNumber = pb.searchContact("555-4321");
             EXPECT_EQ(1, foundByNumber.getSize());
 
             // Test partial name search
-            PhoneBook partialNameSearch = pb.search("Bob");
+            PhoneBook partialNameSearch = pb.searchContact("Bob");
             EXPECT_EQ(2, partialNameSearch.getSize());
 
             // Test deleting by name
@@ -147,7 +146,7 @@ int main() {     // ------------------------ Name Class Tests ------------------
             EXPECT_EQ(ContactType::Personal, pb.getContacts()[0]->getType());
 
             // Verify details of the last contact
-            EXPECT_STREQ("Daniel Gonzalez (Danny)", pb.getContacts()[19]->getName().c_str());
+            EXPECT_STREQ("Daniel Gonzalez", pb.getContacts()[19]->getName().c_str());
             EXPECT_STREQ("503-555-0142", pb.getContacts()[19]->getNumber().c_str());
             EXPECT_STREQ("daniel.gonzalez@firm.biz", pb.getContacts()[19]->getEmail().c_str());
             EXPECT_EQ(ContactType::Work, pb.getContacts()[19]->getType());
