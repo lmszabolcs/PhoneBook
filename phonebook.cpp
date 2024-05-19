@@ -1,12 +1,7 @@
 #include "phonebook.hpp"
+#include "memtrace.h"
 
-void PhoneBook::listAllContacts() {
-    for (size_t i = 0; i < contacts.getSize(); ++i) {
-        contacts[i]->print(std::cout);
-    }
-}
-
-PhoneBook PhoneBook::search(const String &param) const {
+PhoneBook PhoneBook::searchContact(const String &param) const {
     PhoneBook results;
     const char *paramCStr = param.c_str();
 
@@ -19,9 +14,9 @@ PhoneBook PhoneBook::search(const String &param) const {
 
             Contact *newContact;
             if (contact->getType() == ContactType::Personal) {
-                newContact = new PersonalContact(dynamic_cast<PersonalContact &>(*contact));
+                newContact = new PersonalContact(Name(contact->getFirstname(),contact->getLastname(),contact->getNickname()),contact->getAddress(),contact->getNumber());
             } else {
-                newContact = new WorkContact(dynamic_cast<WorkContact &>(*contact));
+                newContact = new WorkContact(Name(contact->getFirstname(),contact->getLastname(),contact->getNickname()),contact->getAddress(),contact->getNumber(),contact->getEmail());
             }
 
             results.addContact(newContact);
@@ -32,7 +27,7 @@ PhoneBook PhoneBook::search(const String &param) const {
 
 
 void PhoneBook::deleteContact(const String& param) {
-    PhoneBook foundContacts = search(param);
+    PhoneBook foundContacts = searchContact(param);
 
     for (size_t i = 0; i < foundContacts.getContacts().getSize(); ++i) {
         delete contacts[i];
@@ -95,5 +90,10 @@ void PhoneBook::saveToFile(std::fstream &file) const {
             file << contact->getEmail() << std::endl;
         }
         file << std::endl;
+    }
+}
+PhoneBook::~PhoneBook() {
+    for (size_t i = 0; i < contacts.getSize(); ++i) {
+        delete contacts[i];
     }
 }

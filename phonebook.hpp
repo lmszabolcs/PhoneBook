@@ -18,7 +18,7 @@ public:
      * @brief Get a container of all contacts.
      * @return A GenTomb containing an array of pointers to Contact objects.
      */
-    const GenTomb<Contact *>& getContacts() { return contacts; }
+    const GenTomb<Contact *>& getContacts() const { return contacts; }
 
     /**
      * @brief Get the number of contacts in the phone book.
@@ -33,16 +33,11 @@ public:
     void addContact(Contact *contact) { contacts.add(contact); }
 
     /**
-     * @brief List and print all contacts in the phone book to the console.
-     */
-    void listAllContacts();
-
-    /**
      * @brief Search for contacts by name, number or address.
      * @param param The name, number or address to search for.
      * @return A new PhoneBook object containing matching contacts.
      */
-    PhoneBook search(const String &param) const;
+    PhoneBook searchContact(const String &param) const;
 
     /**
      * @brief Delete one or multiple contacts based on name or phone number.
@@ -68,11 +63,7 @@ public:
     * @brief Destructor for the PhoneBook class.
     * This destructor is responsible for cleaning up the memory used by the PhoneBook object.
     */
-    ~PhoneBook() {
-         for (size_t i = 0; i < contacts.getSize(); ++i) {
-             delete contacts[i];
-         }
-    }
+    ~PhoneBook();
 };
 
 #endif //PHONEBOOK_PHONEBOOK_HPP

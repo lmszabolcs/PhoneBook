@@ -11,8 +11,6 @@ poi_check:  2021.
 *********************************/
 
 /*definialni kell, ha nem paracssorbol allitjuk be (-DMEMTRACE) */
-#define MEMTRACE
-
 #ifdef _MSC_VER
 #define _CRT_SECURE_NO_WARNINGS 1
 #endif

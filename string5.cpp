@@ -119,3 +119,16 @@ std::istream &operator>>(std::istream &is, String &s0) {
     return is;
 }
 
+std::istream& getline(std::istream& is, String& str) {
+    char c;
+    str = ""; // Ürítjük a stringet
+
+    // Beolvassuk a karaktereket, amíg sorvége karaktert nem találunk, vagy hiba nem történik
+    while (is.get(c) && c != '\n') {
+        if (c != '\r') { // Ha nem kocsi vissza karakter, akkor hozzáadjuk a stringhez
+            str = str + c;
+        }
+    }
+
+    return is;
+}

@@ -1,13 +1,10 @@
-#include <iostream>
-#include <fstream>
-#include "gtest_lite.h"
 #include "phonebook.hpp"
-#include "string5.h"
-#include "name.hpp"
-#include "contact.hpp"
-int main() {
+#include "gtest_lite.h"
+#include "memtrace.h"
 
-    // ------------------------ Name Class Tests ----------------------------
+#ifdef CPORTA
+
+int main() {     // ------------------------ Name Class Tests ----------------------------
 
     TEST(NameTest, GetName)
         {
@@ -87,10 +84,11 @@ int main() {
         }
             END
 
-    TEST(GenTombTest, RemoveFromEmpty) {
-            GenTomb<Contact*> emptyTomb; // Create an empty GenTomb
+    TEST(GenTombTest, RemoveFromEmpty)
+        {
+            GenTomb<Contact *> emptyTomb; // Create an empty GenTomb
 
-            Contact* dummyContact = new PersonalContact(Name("Dummy", "Contact"), "Dummy Address", "Dummy Number");
+            Contact *dummyContact = new PersonalContact(Name("Dummy", "Contact"), "Dummy Address", "Dummy Number");
 
             // Attempt to remove a contact from the empty array
             EXPECT_NO_THROW(emptyTomb.remove(dummyContact));
@@ -99,7 +97,8 @@ int main() {
             EXPECT_EQ(size_t(0), emptyTomb.getSize());
 
             delete dummyContact; // Clean up the dummy contact
-        } END
+        }
+            END
 
     // ------------------------ File I/O Tests ----------------------------
 
@@ -110,7 +109,8 @@ int main() {
 
             // Test successful writing
             pb.addContact(new PersonalContact(Name("Eve", "Davis"), "567 Maple St.", "555-2345"));
-            pb.addContact(new WorkContact(Name("Charlie", "Brown"), "890 Cedar St.", "555-6789", "charlie@example.com"));
+            pb.addContact(
+                    new WorkContact(Name("Charlie", "Brown"), "890 Cedar St.", "555-6789", "charlie@example.com"));
             ASSERT_NO_THROW(pb.saveToFile(file));
 
             // Test successful reading
@@ -129,7 +129,8 @@ int main() {
         }
             END
 
-    TEST(FileIOTest, ReadLargeFile) {
+    TEST(FileIOTest, ReadLargeFile)
+        {
             PhoneBook pb;
 
             // Test reading from the larger file
@@ -150,10 +151,8 @@ int main() {
             EXPECT_STREQ("daniel.gonzalez@firm.biz", pb.getContacts()[19]->getEmail().c_str());
             EXPECT_EQ(ContactType::Work, pb.getContacts()[19]->getType());
 
-            // List all contacts to visually verify the contents
-            std::cout << "\nListing all contacts after reading from file:\n";
-            pb.listAllContacts();
-        } END
+        }
+            END
 
 
     TEST(FileIOTest, FailedRead)
@@ -175,8 +174,17 @@ int main() {
             EXPECT_THROW(pb.saveToFile(file), std::runtime_error);
         }
             END
+}
 
+#else
+
+#include "menu.hpp"
+
+int main() {
+    PhoneBook phonebook;
+    Menu menu(phonebook);
+    menu.show();
     return 0;
 }
 
-
+#endif
