@@ -46,8 +46,8 @@ Menu::MenuState Menu::mainMenu() {
     cout << "Főmenü\n";
     cout << "1 - Névjegy hozzáadása\n";
     cout << "2 - Névjegyek listázása\n";
-    cout << "3 - Névjegy keresése\n";
-    cout << "4 - Névjegy törlése\n";
+    cout << "3 - Névjegyek keresése\n";
+    cout << "4 - Névjegyek törlése\n";
     cout << "5 - Beolvasás fájlból\n";
     cout << "6 - Mentés fájlba\n";
     cout << "7 - Kilépés\n";
@@ -73,18 +73,14 @@ Menu::MenuState Menu::contactAdd() {
 
     cout << "Vezetéknév: ";
     cin >> lastname;
-    cin.ignore();
     cout << "Keresztnév: ";
     cin >> firstname;
-    cin.ignore();
     cout << "Becenév (opcionális): ";
     cin.ignore();
     getline(cin, nickname);
     cout << "Cím: ";
-    cin.ignore();
     getline(cin, address);
 
-    cin.ignore();
     cout << "Telefonszám: ";
     cin >> number;
     cout << "Típus (0: Személyes, 1: Munkahelyi): ";
@@ -115,11 +111,11 @@ Menu::MenuState Menu::contactList() const{
 }
 
 Menu::MenuState Menu::contactSearch() const{
-    cout << "Névjegy keresése\n";
+    cout << "Névjegyek keresése\n";
     String searchParam;
     cout << "Keresendő név/szám/cím: ";
     cin >> searchParam;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Eldobjuk a sor végét
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     PhoneBook found = phonebook.searchContact(searchParam);
     if (found.getSize() == 0) {
@@ -131,11 +127,11 @@ Menu::MenuState Menu::contactSearch() const{
 }
 
 Menu::MenuState Menu::contactDelete() {
-    cout << "Névjegy törlése\n";
+    cout << "Névjegyek törlése\n";
     String deleteParam;
     cout << "Törlendő név/szám: ";
     cin >> deleteParam;
-    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // Eldobjuk a sor végét
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
     phonebook.deleteContact(deleteParam);
     return MAIN_MENU;
@@ -155,12 +151,12 @@ Menu::MenuState Menu::saveFile() const {
 
 Menu::MenuState Menu::readFile() {
     cout << "Névjegyek betöltése fájlból\n";
-    std::fstream file("phonebook.txt", std::ios::in);  // Megnyitás olvasásra
+    std::fstream file("phonebook.txt", std::ios::in);
     if (!file.is_open()) {
         throw std::runtime_error("Nem sikerült megnyitni a fájlt olvasásra.");
     }
 
-    phonebook.readFromFile(file);  // Betöltés a PhoneBook objektumba
+    phonebook.readFromFile(file);
     file.close();
 
     cout << "Névjegyek sikeresen betöltve a phonebook.txt fájlból.\n";
