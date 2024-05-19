@@ -59,7 +59,7 @@ Menu::MenuState Menu::mainMenu() {
         if (cin.fail()) {
             cin.clear();
             cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            cout << "Érvénytelen bemenet. Kérlek, adj meg egy számot 0 és 5 között." << endl;
+            cout << "Érvénytelen bemenet. Kérlek, adj meg egy számot 1 és 7 között." << endl;
         }
     } while (choice < 0 || choice > 7);
 

@@ -1,8 +1,9 @@
 #include "phonebook.hpp"
-#include "gtest_lite.h"
 #include "memtrace.h"
 
 #ifdef CPORTA
+
+#include "gtest_lite.h"
 
 int main() {     // ------------------------ Name Class Tests ----------------------------
 
