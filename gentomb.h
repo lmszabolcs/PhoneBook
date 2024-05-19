@@ -1,6 +1,8 @@
 #ifndef GENTOMB_HPP
 #define GENTOMB_HPP
+
 #include "memtrace.h"
+
 /**
  * @class GenTomb
  * @brief A generic, dynamically-sized array template class.

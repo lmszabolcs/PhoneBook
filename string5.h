@@ -82,7 +82,7 @@ public:
     ///         Indexelési hiba esetén const char* kivételt dob (assert helyett).
     const char &operator[](unsigned int idx) const;
 
-    };
+};
 
 /// Globális függvények:
 /// kiír az ostream-re
@@ -104,7 +104,7 @@ std::istream &operator>>(std::istream &is, String &s0);
  * @param str A String objektum, amelybe a beolvasott karaktereket helyezi.
  * @return Referencia a bemeneti adatfolyamra (std::istream).
  */
-std::istream& getline(std::istream& is, String& str);
+std::istream &getline(std::istream &is, String &str);
 
 /// Karakterhez sztringet fűz
 /// @param ch - karakter

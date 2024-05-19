@@ -1,5 +1,6 @@
 #include "phonebook.hpp"
 #include "memtrace.h"
+
 #ifdef CPORTA
 
 #include "gtest_lite.h"

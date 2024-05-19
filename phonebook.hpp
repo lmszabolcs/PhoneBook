@@ -18,7 +18,7 @@ public:
      * @brief Get a container of all contacts.
      * @return A GenTomb containing an array of pointers to Contact objects.
      */
-    const GenTomb<Contact *>& getContacts() const { return contacts; }
+    const GenTomb<Contact *> &getContacts() const { return contacts; }
 
     /**
      * @brief Get the number of contacts in the phone book.

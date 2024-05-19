@@ -30,18 +30,18 @@ inclue-ok:  2017., 2018., 2019., 2021.
 #define MEMTRACE_C
 
 #ifdef MEMTRACE_C
-    /*ha definialva van, akkor free(NULL) nem okoz hibat*/
+/*ha definialva van, akkor free(NULL) nem okoz hibat*/
 #define ALLOW_FREE_NULL
 #endif
 
 #ifdef __cplusplus
-    /*ha definialva van, akkor new/delete/new[]/delete[] kovetve lesz*/
+/*ha definialva van, akkor new/delete/new[]/delete[] kovetve lesz*/
 #define MEMTRACE_CPP
 #endif
 
 #if defined(__cplusplus) && defined(MEMTRACE_TO_MEMORY)
-    /*ha definialva van, akkor atexit helyett objektumot hasznal*/
-    /*ajanlott bekapcsolni*/
+/*ha definialva van, akkor atexit helyett objektumot hasznal*/
+/*ajanlott bekapcsolni*/
 #define USE_ATEXIT_OBJECT
 #endif
 
@@ -64,7 +64,9 @@ inclue-ok:  2017., 2018., 2019., 2021.
 #define START_NAMESPACE namespace memtrace {
 #define END_NAMESPACE } /*namespace*/
 #define TRACEC(func) memtrace::func
+
 #include <new>
+
 #else
 #define START_NAMESPACE
 #define END_NAMESPACE
@@ -73,23 +75,23 @@ inclue-ok:  2017., 2018., 2019., 2021.
 
 // THROW deklaráció változatai
 #if defined(_MSC_VER)
-  // VS rosszul kezeli az __cplusplus makrot
+// VS rosszul kezeli az __cplusplus makrot
 #if _MSC_VER < 1900
-    // * nem biztos, hogy jó így *
+  // * nem biztos, hogy jó így *
 #define THROW_BADALLOC
 #define THROW_NOTHING
 #else
-    // C++11 vagy újabb
+  // C++11 vagy újabb
 #define THROW_BADALLOC noexcept(false)
 #define THROW_NOTHING noexcept
 #endif
 #else
 #if __cplusplus < 201103L
-    // C++2003 vagy régebbi
+// C++2003 vagy régebbi
 #define THROW_BADALLOC throw (std::bad_alloc)
 #define THROW_NOTHING throw ()
 #else
-    // C++11 vagy újabb
+// C++11 vagy újabb
 #define THROW_BADALLOC noexcept(false)
 #define THROW_NOTHING noexcept
 #endif
@@ -102,40 +104,43 @@ END_NAMESPACE
 #if defined(MEMTRACE_TO_MEMORY)
 START_NAMESPACE
     int mem_check(void);
-    int poi_check(void*);
+
+    int poi_check(void *);
 END_NAMESPACE
 #endif
 
 #if defined(MEMTRACE_TO_MEMORY) && defined(USE_ATEXIT_OBJECT)
+
 #include <cstdio>
+
 START_NAMESPACE
     class atexit_class {
-        private:
-            static int counter;
-            static int err;
-        public:
-            atexit_class() {
+    private:
+        static int counter;
+        static int err;
+    public:
+        atexit_class() {
 #if defined(CPORTA) && !defined(CPORTA_NOSETBUF)
-                if (counter == 0) {
-                        setbuf(stdout, 0);
-                        setbuf(stderr, 0);
-                }
+            if (counter == 0) {
+                    setbuf(stdout, 0);
+                    setbuf(stderr, 0);
+            }
 #endif
             counter++;
-            }
+        }
 
-            int check() {
-                if(--counter == 0)
-                    err = mem_check();
-                return err;
-            }
+        int check() {
+            if (--counter == 0)
+                err = mem_check();
+            return err;
+        }
 
-            ~atexit_class() {
-                check();
-            }
+        ~atexit_class() {
+            check();
+        }
     };
 
-static atexit_class atexit_obj;
+    static atexit_class atexit_obj;
 
 END_NAMESPACE
 #endif/*MEMTRACE_TO_MEMORY && USE_ATEXIT_OBJECT*/

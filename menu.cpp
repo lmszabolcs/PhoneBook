@@ -102,7 +102,7 @@ Menu::MenuState Menu::contactAdd() {
     return MAIN_MENU;
 }
 
-Menu::MenuState Menu::contactList() const{
+Menu::MenuState Menu::contactList() const {
     cout << "Névjegyek listázása\n";
     for (size_t i = 0; i < phonebook.getContacts().getSize(); ++i) {
         phonebook.getContacts()[i]->print(std::cout);
@@ -110,7 +110,7 @@ Menu::MenuState Menu::contactList() const{
     return MAIN_MENU;
 }
 
-Menu::MenuState Menu::contactSearch() const{
+Menu::MenuState Menu::contactSearch() const {
     cout << "Névjegyek keresése\n";
     String searchParam;
     cout << "Keresendő név/szám/cím: ";

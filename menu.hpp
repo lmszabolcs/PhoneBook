@@ -25,14 +25,14 @@ public:
 
 private:
     MenuState state;  ///< The current state of the menu
-    PhoneBook& phonebook;  ///< Reference to the phonebook object
+    PhoneBook &phonebook;  ///< Reference to the phonebook object
 
 private:
     /**
      * @brief Function to display the main menu and handle user input.
      * @return The menu state chosen by the user.
      */
-    static MenuState mainMenu() ;
+    static MenuState mainMenu();
 
     /**
      * @brief Function to handle adding a new contact.
@@ -69,12 +69,13 @@ private:
     * @return The main menu state (MAIN_MENU).
     */
     MenuState readFile();
+
 public:
     /**
      * @brief Constructor for the Menu class.
      * @param pb Reference to the phonebook object.
      */
-    Menu(PhoneBook& pb) : state(MAIN_MENU), phonebook(pb) {}
+    Menu(PhoneBook &pb) : state(MAIN_MENU), phonebook(pb) {}
 
     /**
      * @brief Function to run the main menu loop.
@@ -85,7 +86,7 @@ public:
      * @brief Function to handle exceptions.
      * @param e The exception object.
      */
-    static void handleException(const std::exception& e) ;
+    static void handleException(const std::exception &e);
 };
 
 #endif // MENU_HPP

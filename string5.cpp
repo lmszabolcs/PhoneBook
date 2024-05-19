@@ -119,7 +119,7 @@ std::istream &operator>>(std::istream &is, String &s0) {
     return is;
 }
 
-std::istream& getline(std::istream& is, String& str) {
+std::istream &getline(std::istream &is, String &str) {
     char c;
     str = ""; // Ürítjük a stringet
 

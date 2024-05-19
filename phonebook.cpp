@@ -14,9 +14,13 @@ PhoneBook PhoneBook::searchContact(const String &param) const {
 
             Contact *newContact;
             if (contact->getType() == ContactType::Personal) {
-                newContact = new PersonalContact(Name(contact->getFirstname(),contact->getLastname(),contact->getNickname()),contact->getAddress(),contact->getNumber());
+                newContact = new PersonalContact(
+                        Name(contact->getFirstname(), contact->getLastname(), contact->getNickname()),
+                        contact->getAddress(), contact->getNumber());
             } else {
-                newContact = new WorkContact(Name(contact->getFirstname(),contact->getLastname(),contact->getNickname()),contact->getAddress(),contact->getNumber(),contact->getEmail());
+                newContact = new WorkContact(
+                        Name(contact->getFirstname(), contact->getLastname(), contact->getNickname()),
+                        contact->getAddress(), contact->getNumber(), contact->getEmail());
             }
 
             results.addContact(newContact);
@@ -26,7 +30,7 @@ PhoneBook PhoneBook::searchContact(const String &param) const {
 }
 
 
-void PhoneBook::deleteContact(const String& param) {
+void PhoneBook::deleteContact(const String &param) {
     PhoneBook foundContacts = searchContact(param);
 
     for (size_t i = 0; i < foundContacts.getContacts().getSize(); ++i) {
@@ -92,6 +96,7 @@ void PhoneBook::saveToFile(std::fstream &file) const {
         file << std::endl;
     }
 }
+
 PhoneBook::~PhoneBook() {
     for (size_t i = 0; i < contacts.getSize(); ++i) {
         delete contacts[i];
