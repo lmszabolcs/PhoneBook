@@ -33,9 +33,16 @@ PhoneBook PhoneBook::searchContact(const String &param) const {
 void PhoneBook::deleteContact(const String &param) {
     PhoneBook foundContacts = searchContact(param);
 
-    for (size_t i = 0; i < foundContacts.getContacts().getSize(); ++i) {
-        delete contacts[i];
-        contacts.remove(contacts[i]);
+    for (size_t j = 0; j < foundContacts.getContacts().getSize(); ++j) {
+        Contact *toDelete = foundContacts.getContacts()[j];
+
+        for (size_t i = 0; i < contacts.getSize(); ++i) {
+            if (strcmp(contacts[i]->getName().c_str(), toDelete->getName().c_str()) == 0) {
+                delete contacts[i];
+                contacts.remove(contacts[i]);
+                break;
+            }
+        }
     }
 }
 
@@ -44,35 +51,35 @@ void PhoneBook::readFromFile(std::fstream &file) {
         throw std::runtime_error("Could not open file for reading");
     }
 
-    char buffer[256];
+    String buffer;
 
-    while (file.getline(buffer, sizeof(buffer))) {
-        int typeInt = std::atoi(buffer);
+    while (getline(file, buffer)) {
+        int typeInt = std::atoi(buffer.c_str());
         ContactType type = static_cast<ContactType>(typeInt);
 
-        file.getline(buffer, sizeof(buffer));
+        getline(file, buffer);
         String firstname(buffer);
 
-        file.getline(buffer, sizeof(buffer));
+        getline(file, buffer);
         String lastname(buffer);
 
-        file.getline(buffer, sizeof(buffer));
+        getline(file, buffer);
         String nickname(buffer);
 
-        file.getline(buffer, sizeof(buffer));
+        getline(file, buffer);
         String address(buffer);
 
-        file.getline(buffer, sizeof(buffer));
+        getline(file, buffer);
         String number(buffer);
 
         if (type == ContactType::Personal) {
             contacts.add(new PersonalContact(Name(firstname, lastname, nickname), address, number));
         } else if (type == ContactType::Work) {
-            file.getline(buffer, sizeof(buffer));
+            getline(file, buffer);
             String email(buffer);
             contacts.add(new WorkContact(Name(firstname, lastname, nickname), address, number, email));
         }
-        file.getline(buffer, sizeof(buffer));
+        getline(file, buffer);
     }
 }
 

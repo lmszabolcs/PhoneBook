@@ -44,7 +44,7 @@ private:
      * @brief Function to handle listing all contacts.
      * @return The main menu state (MAIN_MENU).
      */
-    MenuState contactList() const;
+    MenuState contactList(PhoneBook& book) const;
 
     /**
      * @brief Function to handle searching for contacts.

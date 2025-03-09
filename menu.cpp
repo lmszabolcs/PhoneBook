@@ -18,7 +18,7 @@ void Menu::show() {
                     state = contactAdd();
                     break;
                 case CONTACT_LIST:
-                    state = contactList();
+                    state = contactList(phonebook);
                     break;
                 case CONTACT_SEARCH:
                     state = contactSearch();
@@ -102,10 +102,10 @@ Menu::MenuState Menu::contactAdd() {
     return MAIN_MENU;
 }
 
-Menu::MenuState Menu::contactList() const {
+Menu::MenuState Menu::contactList(PhoneBook& book) const {
     cout << "Névjegyek listázása\n";
-    for (size_t i = 0; i < phonebook.getContacts().getSize(); ++i) {
-        phonebook.getContacts()[i]->print(std::cout);
+    for (size_t i = 0; i < book.getContacts().getSize(); ++i) {
+        book.getContacts()[i]->print(std::cout);
     }
     return MAIN_MENU;
 }
@@ -121,7 +121,7 @@ Menu::MenuState Menu::contactSearch() const {
     if (found.getSize() == 0) {
         cout << "Nincs találat.\n";
     } else {
-        contactList();
+        contactList(found);
     }
     return MAIN_MENU;
 }
